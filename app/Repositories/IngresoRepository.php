@@ -17,7 +17,14 @@ class IngresoRepository
     public function findAll(): array
     {
         $stmt = $this->db->query(
-            "SELECT * FROM `ingreso_enfermeria` ORDER BY fecha_ingreso DESC"
+            "SELECT
+                i.*,
+                p.*
+            FROM
+                ingreso_enfermeria i,
+                pacientes p
+            WHERE
+            i.id_paciente = p.id_paciente ORDER BY fecha_ingreso DESC"
         );
 
         return $stmt->fetchAll();

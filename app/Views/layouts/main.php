@@ -35,7 +35,7 @@
                     <div class="nav-item ">
                         <a class="nav-link d-flex align-items-center" href="#"
                             id="profileDropdown" role="button">
-                            <span class="me-2 text-white opacity-75 small">Dr. Francisco Soto</span>
+                            <span class="me-2 text-white opacity-75 small"></span>
                             <div class="bg-white rounded-circle p-1 d-flex align-items-center justify-content-center"
                                 style="width: 32px; height: 32px;">
                                 <span class="material-symbols-outlined text-primary"
@@ -56,7 +56,7 @@
         </div>
     </nav>
 
-    <main class="container my-4">
+    <main class="container my-2">
         <?= $content ?>
     </main>
 
@@ -79,6 +79,8 @@
         </div>
     </footer>
 
+    <script src="/assets/js/app.js"></script>
+
     <script src="/assets/js/plugins/bootstrap.bundle.min.js"></script>
      <!-- jQuery -->
     <script src="/assets/js/plugins/jquery-3.7.1.min.js"></script>
@@ -86,7 +88,7 @@
     <!-- DataTables JS -->
     <script src="/assets/js/plugins/jquery.dataTables.min.js"></script>
     <script src="/assets/js/plugins/dataTables.bootstrap5.min.js"></script>
-    <script src="/assets/js/app.js"></script>
+
 
 </body>
 
