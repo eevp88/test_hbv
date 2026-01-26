@@ -181,27 +181,31 @@ const abrirModalAgregarIngreso = async (id) => {
                     <div class="row g-2 high-density-row">
                         <div class="col-md-4">
                             <label class="form-label">Nombre Completo</label>
-                            <input class="form-control" placeholder="Nombres y Apellidos" type="text" name="nombrePaciente" id="nombrePaciente" />
+                            <input class="form-control" placeholder="Nombres y Apellidos" type="text" name="nombre" id="nombre" />
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">RUT</label>
-                            <input class="form-control" placeholder="12.345.678-9" type="text" />
+                            <input class="form-control" placeholder="12.345.678-9" type="text" name="run"/>
                         </div>
                         <div class="col-md-1">
                             <label class="form-label">Edad</label>
                             <input class="form-control" type="number" name="edad" id="edad" />
                         </div>
+                         <div class="col-md-2">
+                            <label class="form-label">Fecha Ingreso</label>
+                            <input class="form-control" type="date" name="fecha_nacimiento" id="fecha_nacimiento" />
+                        </div>
                         <div class="col-md-2">
                             <label class="form-label">Fecha Ingreso</label>
-                            <input class="form-control" type="date" name="fechaIngreso" id="fechaIngreso" />
+                            <input class="form-control" type="date" name="fecha_ingreso" id="fecha_ingreso" />
                         </div>
                         <div class="col-md-1">
                             <label class="form-label">Hora</label>
-                            <input class="form-control" type="time" name="horaIngreso" id="horaIngreso" />
+                            <input class="form-control" type="time" name="hora_ingreso" id="hora_ingreso" />
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">N° Ficha</label>
-                            <input class="form-control" type="text" name="nroFicha" id="nroFicha" />
+                            <input class="form-control" type="text" name="ficha" id="ficha" />
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">Procedencia</label>
@@ -209,7 +213,7 @@ const abrirModalAgregarIngreso = async (id) => {
                         </div>
                         <div class="col-md-9">
                             <label class="form-label">Diagnóstico Médico de Ingreso</label>
-                            <input class="form-control" placeholder="Diagnóstico principal y secundarios" type="text" name="diagnosticoIngreso" id="diagnosticoIngreso" />
+                            <input class="form-control" placeholder="Diagnóstico principal y secundarios" type="text" name="diagnostico" id="diagnostico" />
                         </div>
                     </div>
                 </div>
@@ -244,15 +248,14 @@ const abrirModalAgregarIngreso = async (id) => {
                                     </td>
                                     <td><input class="form-control form-control-sm border-0 text-center" type="text" name="fr" id="fr" />
                                     </td>
-                                    <td><input class="form-control form-control-sm border-0 text-center"
-                                            placeholder="120/80" type="text" name="pa" id="pa" /></td>
-                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" name="tempAx" id="tempAx" />
+                                    <td><input class="form-control form-control-sm border-0 text-center" placeholder="120/80" type="text" name="pa" id="pa" /></td>
+
+                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" name="tax" id="tax" />
                                     </td>
-                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" name="satO2" id="satO2" />
+                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" name="sato2" id="sato2" />
                                     </td>
-                                    <td><input class="form-control form-control-sm border-0 text-center"
-                                            placeholder="21%" type="text" name="fio2" id="fio2" /></td>
-                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" name="hgt" id="hgt" />
+                                    <td><input class="form-control form-control-sm border-0 text-center" placeholder="21%" type="text" name="fio2" id="fio2" /></td>
+                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" name="hgt_sv" id="hgt_sv" />
                                     </td>
                                     <td><input class="form-control form-control-sm border-0 text-center" type="text" name="eva" id="eva" />
                                     </td>
@@ -305,7 +308,7 @@ const abrirModalAgregarIngreso = async (id) => {
 
                             <div class="col-md-3">
                                 <label class="form-label">Com. Verbal</label>
-                                <select class="form-select" name="comu_verbal" id="comu_verbal">
+                                <select class="form-select" name="com_verbal" id="com_verbal">
                                     <option value="">Seleccione...</option>
                                     <option value="COMPLETA COHERENTE">COMPLETA COHERENTE</option>
                                     <option value="PARCIAL">PARCIAL</option>
@@ -352,7 +355,7 @@ const abrirModalAgregarIngreso = async (id) => {
 
                             <div class="col-md-9">
                                 <label class="form-label">Observación </label>
-                                <textarea class="form-control" name="observacion_comunicacion" id="observacion_comunicacion"
+                                <textarea class="form-control" name="observaciones_comunicacion" id="observaciones_comunicacion"
                                 placeholder="Información relevante para la entrega de turno..." rows="2"></textarea>
                             </div>
                         </div>
@@ -365,13 +368,7 @@ const abrirModalAgregarIngreso = async (id) => {
                              <div class="col-md-3">
                                 <label class="form-label">Via. Aérea</label>
                                 <select class="form-select" name="via_aerea" id="via_aerea">
-                                    <option value="">Seleccione...</option>
-                                    <option value="NORMAL">NORMAL</option>
-                                    <option value="DISNEA">DISNEA</option>
-                                    <option value="POLIPNEA">POLIPNEA</option>
-                                    <option value="PARADOJAL">PARADOJAL</option>
-                                    <option value="GASPING">GASPING</option>
-                                    <option value="APNEA">APNEA</option>
+                                   
                                 </select>
                             </div>
 
@@ -379,11 +376,13 @@ const abrirModalAgregarIngreso = async (id) => {
                              <div class="col-md-3">
                                 <label class="form-label">Respiracion</label>
                                 <select class="form-select" name="respiracion" id="respiracion">
-                                    <option value="">Seleccione...</option>
-                                    <option value="PERMEABLE">PERMEABLE</option>
-                                    <option value="SECRECIONES">SECRECIONES</option>
-                                    <option value="CANULA MAYO">CANULA MAYO</option>
-                                    <option value="TOT">TOT</option>
+                                     <option value="">Seleccione...</option>
+                                    <option value="NORMAL">NORMAL</option>
+                                    <option value="DISNEA">DISNEA</option>
+                                    <option value="POLIPNEA">POLIPNEA</option>
+                                    <option value="PARADOJAL">PARADOJAL</option>
+                                    <option value="GASPING">GASPING</option>
+                                    <option value="APNEA">APNEA</option>
                                 </select>
                             </div>
 
@@ -417,20 +416,20 @@ const abrirModalAgregarIngreso = async (id) => {
                                 <label class="form-label">Color Piel</label>
                                 <div class="d-flex gap-2">
                                     <div class="form-check">
-                                        <input  type="checkbox" class="form-check-input" name="color_piel[]" value="ROSADA">
+                                        <input  type="checkbox" class="form-check-input" name="color_piel" value="ROSADA">
                                         <label class="form-check-label small">ROSADA</label>
                                     </div>
                                     <div class="form-check">
-                                        <input  type="checkbox" class="form-check-input" name="color_piel[]" value="PALIDA">
+                                        <input  type="checkbox" class="form-check-input" name="color_piel" value="PALIDA">
                                         <label class="form-check-label small">PALIDA</label>
                                     </div>
                                     <div class="form-check">                                        
-                                        <input  class="form-check-input" type="checkbox" name="color_piel[]" value="CIANOTICA">
+                                        <input  class="form-check-input" type="checkbox" name="color_piel" value="CIANOTICA">
                                         <label class="form-check-label small">CIANÓTICA</label>
                                     </div>
 
                                     <div class="form-check">                                        
-                                        <input  class="form-check-input" type="checkbox" name="color_piel[]" value="LIVIDECES">
+                                        <input  class="form-check-input" type="checkbox" name="color_piel" value="LIVIDECES">
                                         <label class="form-check-label small">LIVIDECES</label>
                                     </div>
                                 </div>
@@ -442,27 +441,27 @@ const abrirModalAgregarIngreso = async (id) => {
                                 <label class="form-label">Secreción</label>
                                 <div class="d-flex flex-wrap gap-2">
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="secrecion[]" value="MUCOSA">
+                                        <input  type="checkbox" class="form-check-input" name="secrecion" value="MUCOSA">
                                         <label class="form-check-label small">MUCOSA</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="secrecion[]" value="PURULENTA">
+                                        <input  type="checkbox" class="form-check-input" name="secrecion" value="PURULENTA">
                                         <label class="form-check-label small">PURULENTA</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="secrecion[]" value="HEMATICA">
+                                        <input  type="checkbox" class="form-check-input" name="secrecion" value="HEMATICA">
                                         <label class="form-check-label small">HEMATICA</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="secrecion[]" value="ABUNDANTE">
+                                        <input  type="checkbox" class="form-check-input" name="secrecion" value="ABUNDANTE">
                                         <label class="form-check-label small">ABUNDANTE</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="secrecion[]" value="REGULAR">
+                                        <input  type="checkbox" class="form-check-input" name="secrecion" value="REGULAR">
                                         <label class="form-check-label small">REGULAR</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="secrecion[]" value="ESCASA">
+                                        <input  type="checkbox" class="form-check-input" name="secrecion" value="ESCASA">
                                         <label class="form-check-label small">ESCASA</label>
                                     </div>
                                 </div>
@@ -470,7 +469,7 @@ const abrirModalAgregarIngreso = async (id) => {
 
                              <div class="col-md-6">
                                 <label class="form-label">Observación </label>
-                                <textarea class="form-control" name="observacion_oxigenacion" id="observacion_oxigenacion"
+                                <textarea class="form-control" name="observaciones_oxigenacion" id="observaciones_oxigenacion"
                                 placeholder="Información relevante para la entrega de turno..." rows="2" ></textarea>
                             </div>
 
@@ -490,7 +489,17 @@ const abrirModalAgregarIngreso = async (id) => {
                                     <option value="OBESO">OBESO</option> 
                                 </select>
                             </div>
-
+                             <div class="col-md-4">
+                                <label class="form-label">Alimentación</label>
+                                <select class="form-select mb-2" name="alimentacion" required> 
+                                    <option value="">Seleccione...</option>
+                                    <option value="SOLO">SOLO</option> 
+                                    <option value="CON AYUDA">CON AYUDA</option> 
+                                    <option value="NO SE ALIMENTA">NO SE ALIMENTA</option> 
+                                    <option value="NAUSEAS">NAUSEAS</option> 
+                                     <option value="VOMITOS">VOMITOS</option> 
+                                </select>
+                            </div>
                             <div class="col-md-4">
                                 <label class="form-label">Apetito</label>
                                 <select class="form-select mb-2" name="apetito" required> 
@@ -521,23 +530,23 @@ const abrirModalAgregarIngreso = async (id) => {
                                 <label class="form-label">Abdomen</label>
                                 <div class="d-flex flex-wrap gap-2">
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="abdomen[]" value="BLANDO">
+                                        <input  type="checkbox" class="form-check-input" name="abdomen" value="BLANDO">
                                         <label class="form-check-label small">BLANDO</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="abdomen[]" value="DEPRESIBLE">
+                                        <input  type="checkbox" class="form-check-input" name="abdomen" value="DEPRESIBLE">
                                         <label class="form-check-label small">DEPRESIBLE</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="abdomen[]" value="DOLOROSO">
+                                        <input  type="checkbox" class="form-check-input" name="abdome" value="DOLOROSO">
                                         <label class="form-check-label small">DOLOROSO</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="abdomen[]" value="DISTENDIDO">
+                                        <input  type="checkbox" class="form-check-input" name="abdome" value="DISTENDIDO">
                                         <label class="form-check-label small">DISTENDIDO</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="abdomen[]" value="ASCITIS">
+                                        <input  type="checkbox" class="form-check-input" name="abdome" value="ASCITIS">
                                         <label class="form-check-label small">ASCITIS</label>
                                     </div>
                                    
@@ -548,23 +557,23 @@ const abrirModalAgregarIngreso = async (id) => {
                                 <label class="form-label">Abdomen</label>
                                 <div class="d-flex flex-wrap gap-2">
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="otra[]" value="SNG/SNY">
+                                        <input  type="checkbox" class="form-check-input" name="otra" value="SNG/SNY">
                                         <label class="form-check-label small">SNG/SNY</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="otra[]" value="GASTRO">
+                                        <input  type="checkbox" class="form-check-input" name="otra" value="GASTRO">
                                         <label class="form-check-label small">GASTRO</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="otra[]" value="YEYUNO">
+                                        <input  type="checkbox" class="form-check-input" name="otra" value="YEYUNO">
                                         <label class="form-check-label small">YEYUNO</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="otra[]" value="ENTERAL">
+                                        <input  type="checkbox" class="form-check-input" name="otra" value="ENTERAL">
                                         <label class="form-check-label small">ENTERAL</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="otra[]" value="PARENTERAL">
+                                        <input  type="checkbox" class="form-check-input" name="otra" value="PARENTERAL">
                                         <label class="form-check-label small">PARENTERAL</label>
                                     </div>  
                                 </div>
@@ -572,7 +581,7 @@ const abrirModalAgregarIngreso = async (id) => {
 
                              <div class="col-md-6">
                                 <label class="form-label">Observación </label>
-                                <textarea class="form-control" name="observacion_nutricion" id="observacion_nutricion"
+                                <textarea class="form-control" name="observaciones_nutricion" id="observaciones_nutricion"
                                 placeholder="Información relevante para la entrega de turno..." rows="2" ></textarea>
                             </div>
 
@@ -588,38 +597,38 @@ const abrirModalAgregarIngreso = async (id) => {
                                 <label class="form-label">Intestinal</label>
                                 <div class="d-flex flex-wrap gap-2">
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="intestinal[]" value="DIARREA">
+                                        <input  type="checkbox" class="form-check-input" name="intestinal" value="DIARREA">
                                         <label class="form-check-label small">DIARREA</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="intestinal[]" value="INCONTINENCIA">
+                                        <input  type="checkbox" class="form-check-input" name="intestinal" value="INCONTINENCIA">
                                         <label class="form-check-label small">INCONTINENCIA</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="intestinal[]" value="RECTORRAGIA">
+                                        <input  type="checkbox" class="form-check-input" name="intestinal" value="RECTORRAGIA">
                                         <label class="form-check-label small">RECTORRAGIA</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="intestinal[]" value="MELENA">
+                                        <input  type="checkbox" class="form-check-input" name="intestinal" value="MELENA">
                                         <label class="form-check-label small">MELENA</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="intestinal[]" value="ESTREÑIMIENTO">
+                                        <input  type="checkbox" class="form-check-input" name="intestinal" value="ESTREÑIMIENTO">
                                         <label class="form-check-label small">ESTREÑIMIENTO</label>
                                     </div>
 
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="intestinal[]" value="ACOLIA">
+                                        <input  type="checkbox" class="form-check-input" name="intestinal" value="ACOLIA">
                                         <label class="form-check-label small">ACOLIA</label>
                                     </div>
 
                                      <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="intestinal[]" value="PAÑALES">
+                                        <input  type="checkbox" class="form-check-input" name="intestinal" value="PAÑALES">
                                         <label class="form-check-label small">PAÑALES</label>
                                     </div>
 
                                      <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="intestinal[]" value="OSTOMIA">
+                                        <input  type="checkbox" class="form-check-input" name="intestinal" value="OSTOMIA">
                                         <label class="form-check-label small">OSTOMIA</label>
                                     </div>
                                    
@@ -630,28 +639,28 @@ const abrirModalAgregarIngreso = async (id) => {
                                 <label class="form-label">Urinaria</label>
                                 <div class="d-flex flex-wrap gap-2">
                                     <div class="form-check form-check-inline">
-                                        <input type="checkbox" class="form-check-input" name="urinaria[]" value="INCONTINENCIA">
+                                        <input type="checkbox" class="form-check-input" name="urinaria" value="INCONTINENCIA">
                                         <label class="form-check-label small">INCONTINENCIA</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input type="checkbox" class="form-check-input" name="urinaria[]" value="RETENCION">
+                                        <input type="checkbox" class="form-check-input" name="urinaria" value="RETENCION">
                                         <label class="form-check-label small">RETENCION</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input type="checkbox" class="form-check-input" name="urinaria[]" value="DISURIA">
+                                        <input type="checkbox" class="form-check-input" name="urinaria" value="DISURIA">
                                         <label class="form-check-label small">DISURIA</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input type="checkbox" class="form-check-input" name="urinaria[]" value="TENESMO">
+                                        <input type="checkbox" class="form-check-input" name="urinaria" value="TENESMO">
                                         <label class="form-check-label small">TENESMO</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input type="checkbox" class="form-check-input" name="urinaria[]" value="PAÑALES">
+                                        <input type="checkbox" class="form-check-input" name="urinaria" value="PAÑALES">
                                         <label class="form-check-label small">PAÑALES</label>
                                     </div>
 
                                     <div class="form-check form-check-inline">
-                                        <input type="checkbox" class="form-check-input" name="urinaria[]" value="SONDA FOLEY">
+                                        <input type="checkbox" class="form-check-input" name="urinaria" value="SONDA FOLEY">
                                         <label class="form-check-label small">SONDA FOLEY</label>
                                     </div>
     
@@ -691,7 +700,7 @@ const abrirModalAgregarIngreso = async (id) => {
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Observación </label>
-                                <textarea class="form-control" name="observacion_eliminacion" id="observacion_eliminacion"
+                                <textarea class="form-control" name="observaciones_eliminacion" id="observaciones_eliminacion"
                                 placeholder="Información relevante para la entrega de turno..." rows="2" ></textarea>
                             </div>
                         </div>
@@ -704,7 +713,7 @@ const abrirModalAgregarIngreso = async (id) => {
                                 <label class="form-label"></label>
                                 <div class="d-flex flex-wrap gap-2">
                                     <div class="form-check form-check-inline">
-                                        <input pe="checkbox" class="form-check-input" name="religioso" value="">
+                                        <input type="checkbox" class="form-check-input" name="solicita_servicios_religiosos" >
                                         <label class="form-check-label small">SOLICITA SERVICIOS RELIGIOSOS</label>
                                     </div>
                                 </div>
@@ -716,15 +725,7 @@ const abrirModalAgregarIngreso = async (id) => {
                     <div class="mb-4">
                         <h6 class="sub-section-title">Movilización</h6>
                         <div class="row g-3">
-                            <div class="col-md-4">
-                                <label class="form-label">Actividad/Movilidad</label>
-                                <select class="form-select mb-2" name="actividad" required> 
-                                    <option value="">Seleccione...</option> 
-                                    <option value="MOVILIZA SOLO">MOVILIZA SOLO</option>
-                                    <option value="MOVILIZA CON AYUDA">MOVILIZA CON AYUDA</option> 
-                                    <option value="NO SE MOVILIZA">NO SE MOVILIZA</option>
-                                </select>
-                            </div> 
+                            
 
                             <div class="col-md-4">
                                 <label class="form-label">Actividad/Movilidad</label>
@@ -742,19 +743,19 @@ const abrirModalAgregarIngreso = async (id) => {
                                 <label class="form-label">Inmovilización</label>
                                 <div class="d-flex flex-wrap gap-2">
                                     <div class="form-check form-check-inline">
-                                        <input type="checkbox" class="form-check-input" name="inmovilizacion[]" value="TABLA ESPINAL">
+                                        <input type="checkbox" class="form-check-input" name="inmovilizacion" value="TABLA ESPINAL">
                                         <label class="form-check-label small">TABLA ESPINAL</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input type="checkbox" class="form-check-input" name="inmovilizacion[]" value="COLLAR">
+                                        <input type="checkbox" class="form-check-input" name="inmovilizacion" value="COLLAR">
                                         <label class="form-check-label small">COLLAR</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input type="checkbox" class="form-check-input" name="inmovilizacion[]" value="FERULA">
+                                        <input type="checkbox" class="form-check-input" name="inmovilizacion" value="FERULA">
                                         <label class="form-check-label small">FERULA</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input type="checkbox" class="form-check-input" name="inmovilizacion[]" value="VALVA YESO">
+                                        <input type="checkbox" class="form-check-input" name="inmovilizacion" value="VALVA YESO">
                                         <label class="form-check-label small">VALVA YESO</label>
                                     </div>
                                 </div>
@@ -781,7 +782,7 @@ const abrirModalAgregarIngreso = async (id) => {
 
                             <div class="col-md-4">
                                 <label class="form-label">Observación </label>
-                                <textarea class="form-control" name="observacion_movilizacion" id="observacion_movilizacion"
+                                <textarea class="form-control" name="observaciones_movilizacion" id="observaciones_movilizacion"
                                 placeholder="Información relevante para la entrega de turno..." rows="2" ></textarea>
                             </div>
                        
@@ -819,23 +820,23 @@ const abrirModalAgregarIngreso = async (id) => {
                                 <label class="form-label">Heridas</label>
                                 <div class="d-flex flex-wrap gap-2">
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="heridas[]" value="OPERATORIA">
+                                        <input  type="checkbox" class="form-check-input" name="heridas" value="OPERATORIA">
                                         <label class="form-check-label small">OPERATORIA</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="heridas[]" value="CORTANTE">
+                                        <input  type="checkbox" class="form-check-input" name="heridas" value="CORTANTE">
                                         <label class="form-check-label small">CORTANTE</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="heridas[]" value="ULCERA">
+                                        <input  type="checkbox" class="form-check-input" name="heridas" value="ULCERA">
                                         <label class="form-check-label small">ULCERA</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input   type="checkbox" class="form-check-input" name="heridas[]" value="QUEMADURA">
+                                        <input   type="checkbox" class="form-check-input" name="heridas" value="QUEMADURA">
                                         <label class="form-check-label small">QUEMADURA</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input   type="checkbox" class="form-check-input" name="heridas[]" value="CONTUSA">
+                                        <input   type="checkbox" class="form-check-input" name="heridas" value="CONTUSA">
                                         <label class="form-check-label small">CONTUSA</label>
                                     </div>
                                 </div>
@@ -847,23 +848,23 @@ const abrirModalAgregarIngreso = async (id) => {
                                 <label class="form-label">Caracteristicas Heridas</label>
                                 <div class="d-flex flex-wrap gap-2">
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="caracteristicas_heridas[]" value="LIMPIA">
+                                        <input  type="checkbox" class="form-check-input" name="caracteristicas_heridas" value="LIMPIA">
                                         <label class="form-check-label small">LIMPIA</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="caracteristicas_heridas[]" value="SUCIA">
+                                        <input  type="checkbox" class="form-check-input" name="caracteristicas_heridas" value="SUCIA">
                                         <label class="form-check-label small">SUCIA</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="caracteristicas_heridas[]" value="CONTAMINADA">
+                                        <input  type="checkbox" class="form-check-input" name="caracteristicas_heridas" value="CONTAMINADA">
                                         <label class="form-check-label small">CONTAMINADA</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input   type="checkbox" class="form-check-input" name="caracteristicas_heridas[]" value="INFECTADA">
+                                        <input   type="checkbox" class="form-check-input" name="caracteristicas_heridas" value="INFECTADA">
                                         <label class="form-check-label small">INFECTADA</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input   type="checkbox" class="form-check-input" name="caracteristicas_heridas[]" value="ABRASIVA">
+                                        <input   type="checkbox" class="form-check-input" name="caracteristicas_heridas" value="ABRASIVA">
                                         <label class="form-check-label small">ABRASIVA</label>
                                     </div>
                                 </div>
@@ -873,19 +874,19 @@ const abrirModalAgregarIngreso = async (id) => {
                                 <label class="form-label">Vendajes Heridas</label>
                                 <div class="d-flex flex-wrap gap-2">
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="vendaje_heridas[]" value="LIMPIO">
+                                        <input  type="checkbox" class="form-check-input" name="vendaje_heridas" value="LIMPIO">
                                         <label class="form-check-label small">LIMPIO</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="vendaje_heridas[]" value="SUCIOS">
+                                        <input  type="checkbox" class="form-check-input" name="vendaje_heridas" value="SUCIOS">
                                         <label class="form-check-label small">SUCIOS</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="vendaje_heridas[]" value="FIJOS">
+                                        <input  type="checkbox" class="form-check-input" name="vendaje_heridas" value="FIJOS">
                                         <label class="form-check-label small">FIJOS</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input   type="checkbox" class="form-check-input" name="vendaje_heridas[]" value="SIN VENDAJE">
+                                        <input   type="checkbox" class="form-check-input" name="vendaje_heridas" value="SIN VENDAJE">
                                         <label class="form-check-label small">SIN VENDAJE</label>
                                     </div>
                                     
@@ -894,7 +895,7 @@ const abrirModalAgregarIngreso = async (id) => {
 
                             <div class="col-md-4">
                                 <label class="form-label">Observación </label>
-                                <textarea class="form-control" name="observacion_heridas" id="observacion_heridas"
+                                <textarea class="form-control" name="observaciones_higiene" id="observaciones_higiene"
                                 placeholder="Información relevante para la entrega de turno..." rows="2" ></textarea>
                             </div>
                        
@@ -909,24 +910,24 @@ const abrirModalAgregarIngreso = async (id) => {
                                 <label class="form-label">Habitos</label>
                                 <div class="d-flex flex-wrap gap-2">
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="habitos[]" value="ALCOHOL">
+                                        <input  type="checkbox" class="form-check-input" name="habitos" value="ALCOHOL">
                                         <label class="form-check-label small">ALCOHOL</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="habitos[]" value="TABACO">
+                                        <input  type="checkbox" class="form-check-input" name="habitos" value="TABACO">
                                         <label class="form-check-label small">TABACO</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="habitos[]" value="DROGAS">
+                                        <input  type="checkbox" class="form-check-input" name="habitos" value="DROGAS">
                                         <label class="form-check-label small">DROGAS</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input   type="checkbox" class="form-check-input" name="habitos[]" value="VIF">
+                                        <input   type="checkbox" class="form-check-input" name="habitos" value="VIF">
                                         <label class="form-check-label small">VIF</label>
                                     </div>
 
                                     <div class="form-check form-check-inline">
-                                        <input   type="checkbox" class="form-check-input" name="habitos[]" value="MALTRATO">
+                                        <input   type="checkbox" class="form-check-input" name="habitos" value="MALTRATO">
                                         <label class="form-check-label small">MALTRATO</label>
                                     </div>
                                     
@@ -937,15 +938,15 @@ const abrirModalAgregarIngreso = async (id) => {
                                 <label class="form-label">Frecuencia Habitos</label>
                                 <div class="d-flex flex-wrap gap-2">
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="frecuencia_habitos[]" value="AISLADO">
+                                        <input  type="checkbox" class="form-check-input" name="frecuencia_habitos" value="AISLADO">
                                         <label class="form-check-label small">AISLADO</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="frecuencia_habitos[]" value="OCASIONAL">
+                                        <input  type="checkbox" class="form-check-input" name="frecuencia_habitos" value="OCASIONAL">
                                         <label class="form-check-label small">OCASIONAL</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="frecuencia_habitos[]" value="FRECUENTE">
+                                        <input  type="checkbox" class="form-check-input" name="frecuencia_habitos" value="FRECUENTE">
                                         <label class="form-check-label small">FRECUENTE</label>
                                     </div>  
                                 </div>
@@ -955,19 +956,19 @@ const abrirModalAgregarIngreso = async (id) => {
                                 <label class="form-label">Alergias</label>
                                 <div class="d-flex flex-wrap gap-2">
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="alergias[]" value="MEDICAMENTOS">
+                                        <input  type="checkbox" class="form-check-input" name="alergias" value="MEDICAMENTOS">
                                         <label class="form-check-label small">MEDICAMENTOS</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="alergias[]" value="ANESTESIA">
+                                        <input  type="checkbox" class="form-check-input" name="alergias" value="ANESTESIA">
                                         <label class="form-check-label small">ANESTESIA</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="alergias[]" value="ALIMENTOS">
+                                        <input  type="checkbox" class="form-check-input" name="alergias" value="ALIMENTOS">
                                         <label class="form-check-label small">ALIMENTOS</label>
                                     </div>  
                                      <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="alergias[]" value="INSECTOS">
+                                        <input  type="checkbox" class="form-check-input" name="alergias" value="INSECTOS">
                                         <label class="form-check-label small">INSECTOS</label>
                                     </div>  
                                 </div>
@@ -989,11 +990,11 @@ const abrirModalAgregarIngreso = async (id) => {
                                 <label class="form-label">Vacunas</label>
                                 <div class="d-flex flex-wrap gap-2">
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="vacunas[]" value="ANTIRRABICA">
+                                        <input  type="checkbox" class="form-check-input" name="vacunas" value="ANTIRRABICA">
                                         <label class="form-check-label small">ANTIRRABICA</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="vacunas[]" value="TETANOS">
+                                        <input  type="checkbox" class="form-check-input" name="vacunas" value="TETANOS">
                                         <label class="form-check-label small">TETANOS</label>
                                     </div>
                                    
@@ -1004,26 +1005,26 @@ const abrirModalAgregarIngreso = async (id) => {
                                 <label class="form-label">Antecedentes Morbidos</label>
                                 <div class="d-flex flex-wrap gap-2">
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="ant_morbidos[]" value="HTA">
+                                        <input  type="checkbox" class="form-check-input" name="ant_morbidos" value="HTA">
                                         <label class="form-check-label small">HTA</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="ant_morbidos[]" value="DM">
+                                        <input  type="checkbox" class="form-check-input" name="ant_morbidos" value="DM">
                                         <label class="form-check-label small">DM</label>
                                     </div>
 
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="ant_morbidos[]" value="EPI">
+                                        <input  type="checkbox" class="form-check-input" name="ant_morbidos" value="EPI">
                                         <label class="form-check-label small">EPI</label>
                                     </div>
 
                                     <div class="form-check form-check-inline">
-                                        <input type="checkbox" class="form-check-input" name="ant_morbidos[]" value="ERC">
+                                        <input type="checkbox" class="form-check-input" name="ant_morbidos" value="ERC">
                                         <label class="form-check-label small">ERC</label>
                                     </div>
 
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="ant_morbidos[]" value="EPOC">
+                                        <input  type="checkbox" class="form-check-input" name="ant_morbidos" value="EPOC">
                                         <label class="form-check-label small">EPOC</label>
                                     </div>
                                    
@@ -1032,7 +1033,7 @@ const abrirModalAgregarIngreso = async (id) => {
 
                             <div class="col-md-6">
                                 <label class="form-label">Observación </label>
-                                <textarea class="form-control" name="observacion_seguridad" id="observacion_seguridad"
+                                <textarea class="form-control" name="observaciones_seguridad" id="observaciones_seguridad"
                                 placeholder="Información relevante para la entrega de turno..." rows="2" ></textarea>
                             </div>
 
@@ -1055,7 +1056,7 @@ const abrirModalAgregarIngreso = async (id) => {
 
                             <div class="col-md-8">
                                 <label class="form-label">Observación </label>
-                                <textarea class="form-control" name="observacion_termorregulacion" id="observacion_termorregulacion"
+                                <textarea class="form-control" name="observaciones_termorregulacion" id="observaciones_termorregulacion"
                                 placeholder="Información relevante para la entrega de turno..." rows="2" ></textarea>
                             </div>
 
@@ -1101,7 +1102,7 @@ const abrirModalAgregarIngreso = async (id) => {
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Acompañado</label>
-                                <select class="form-select mb-2" name="acompañamiento" required> 
+                                <select class="form-select mb-2" name="acompanamiento" required> 
                                     <option value="">Seleccione...</option> 
                                     <option value="FAMILIAR">FAMILIAR</option> 
                                     <option value="AMIGO">AMIGO</option> 
@@ -1113,7 +1114,7 @@ const abrirModalAgregarIngreso = async (id) => {
 
                             <div class="col-md-8">
                                 <label class="form-label">Observación </label>
-                                <textarea class="form-control" name="observacion_realizacion_personal" id="observacion_realizacion_personal"
+                                <textarea class="form-control" name="observaciones_realizacion_personal" id="observaciones_realizacion_personal"
                                 placeholder="Información relevante para la entrega de turno..." rows="2" ></textarea>
                             </div>
 
@@ -1225,8 +1226,8 @@ const abrirModalAgregarIngreso = async (id) => {
                                 <div class="row align-items-center">
                                     <div class="col-md-2">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="vvp" name="vvp" value="SI">
-                                            <label class="form-check-label procedure-label" for="vvp">
+                                            <input class="form-check-input" type="checkbox" id="vvp_adm" name="vvp_adm" value="SI">
+                                            <label class="form-check-label procedure-label" for="vvp_adm">
                                                 VVP
                                             </label>
                                         </div>
@@ -1242,7 +1243,7 @@ const abrirModalAgregarIngreso = async (id) => {
                         </div>    
                             <div class="col-md-8">
                                 <label class="form-label">Soluciones Administradas</label>
-                                <textarea class="form-control" name="soluciones_administradas" id="soluciones_administradas"
+                                <textarea class="form-control" name="descripcion_soluciones_administradas" id="descripcion_soluciones_administradas"
                                 placeholder="Información relevante para la entrega de turno..." rows="2" ></textarea>
                             </div>
 
@@ -1372,10 +1373,10 @@ const abrirModalAgregarIngreso = async (id) => {
 
                                     <!-- FILA 4 -->
                                     <tr>
-                                        <td class="procedure-cell" onclick="toggleCheckbox('vvp')">
+                                        <td class="procedure-cell" onclick="toggleCheckbox('vvp_ingreso')">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="vvp" name="vvp" value="1">
-                                                <label class="form-check-label" for="vvp">VVP</label>
+                                                <input class="form-check-input" type="checkbox" id="vvp_ingreso" name="vvp_ingreso" value="1">
+                                                <label class="form-check-label" for="vvp_ingreso">VVP</label>
                                             </div>
                                         </td>
                                         <td class="procedure-cell" onclick="toggleCheckbox('intubacion')">
@@ -1453,25 +1454,29 @@ const abrirModalAgregarIngreso = async (id) => {
                 </div>
                 <div class="card-body p-3">
                     <div class="row g-3">
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <label class="form-label">Nombre del Enfermero(a) que recibe</label>
-                            <input class="form-control" placeholder="Nombre completo" type="text" />
+                            <input class="form-control" placeholder="Nombre completo" type="text" name="nombre_enfermero" />
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">RUT / Registro SIS</label>
-                            <input class="form-control" type="text" />
+                            <label class="form-label">RUT</label>
+                            <input class="form-control" type="text" mane="run_enfermero" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Código</label>
+                            <input class="form-control" type="text"  name="codigo_enfermero" />
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">Fecha Término</label>
-                            <input class="form-control" type="date" />
+                            <input class="form-control" type="date" name="fecha_termino"/>
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">Hora Término</label>
-                            <input class="form-control" type="time" />
+                            <input class="form-control" type="time" name="hora_termino"/>
                         </div>
                         <div class="col-12">
                             <label class="form-label">Observaciones Finales / Pendientes</label>
-                            <textarea class="form-control"
+                            <textarea class="form-control" name="observaciones_finales"
                                 placeholder="Información relevante para la entrega de turno..." rows="2"></textarea>
                         </div>
                     </div>
@@ -1554,117 +1559,176 @@ const initializeProcedureAdminCheckboxes = () => {
 const guardarIngreso = () => {
     // Aquí puedes agregar la lógica para guardar el ingreso
     const idFormulario = document.querySelector('form');
-    const schema = formToSchema(idFormulario);
-
+    const schema = formToJson(idFormulario);
+    const payload = normalizeIngresoPayload(schema);
+    console.log(schema)
+    console.log('payload',payload)
     let response = tx.request({
         url: '/ingresos',
         headers: {
             "Content-Type": "application/json"
         },
         method: 'POST',
-        body: JSON.stringify(schema)
+        body: JSON.stringify(payload)
     })
 
     console.log(response);
+    if (response.success == false) {
+        alert(response.success);
+    }else{
+        cargarIngresos()
+        alert('Ingreso guardado exitosamente.');
+        // Cerrar el modal después de guardar
+        let modalElement = document.getElementById('ingresoModal');
+        let modal = bootstrap.Modal.getInstance(modalElement);
+        modal.hide();
 
-    
+    }
 
-    alert('Ingreso guardado exitosamente.');
-    // Cerrar el modal después de guardar
-    let modalElement = document.getElementById('ingresoModal');
-    let modal = bootstrap.Modal.getInstance(modalElement);
-    modal.hide();
 }
 
 
-
-const formToSchema = (form) => {
-  const schema = {};
+const formToJson = (form) => {
+  const data = {};
   const fields = form.querySelectorAll('[name]');
 
   fields.forEach(field => {
-    const { name, type, value } = field;
+    let name = field.name;
+    const type = field.type;
     const tag = field.tagName.toLowerCase();
 
-    // Inicialización del campo
-    if (!schema[name]) {
-      schema[name] = {
-        type,
-        value: null,
-        options: null,
-        multiple: false
-      };
+    // Detectar arrays por convención name[]
+    const isArray = name.endsWith('[]');
+    if (isArray) {
+      name = name.slice(0, -2);
+      data[name] ??= [];
     }
 
-    const entry = schema[name];
-
-    // Detectar checkbox múltiples
+    // CHECKBOX
     if (type === 'checkbox') {
-      entry.multiple = form.querySelectorAll(`input[type="checkbox"][name="${name}"]`).length > 1;
-      entry.type = 'checkbox';
-      entry.options ??= [];
-      if (!entry.options.includes(value)) {
-        entry.options.push(value);
-      }
-
-      if (entry.multiple) {
-        entry.value ??= [];
+      if (isArray) {
         if (field.checked) {
-          entry.value.push(value);
+          data[name].push(field.value);
         }
       } else {
-        entry.value = field.checked;
-        entry.options = [true, false];
+        data[name] = field.checked;
       }
-
       return;
     }
 
-    // Radio
+    // RADIO
     if (type === 'radio') {
-      entry.type = 'radio';
-      entry.options ??= [];
-      if (!entry.options.includes(value)) {
-        entry.options.push(value);
-      }
       if (field.checked) {
-        entry.value = value;
+        data[name] = field.value;
+      } else if (!(name in data)) {
+        data[name] = null;
       }
       return;
     }
 
-    // Select
+    // SELECT
     if (tag === 'select') {
-      entry.type = field.multiple ? 'select-multiple' : 'select';
-      entry.options = [...field.options].map(o => o.value);
-      entry.value = field.multiple
-        ? [...field.selectedOptions].map(o => o.value)
-        : field.value;
+      if (field.multiple) {
+        data[name] = [...field.selectedOptions].map(o => o.value);
+      } else {
+        data[name] = field.value || null;
+      }
       return;
     }
 
-    // File
+    // FILE
     if (type === 'file') {
-      entry.type = 'file';
-      entry.value = field.files.length ? field.files : [];
+      data[name] = field.files.length ? field.files : null;
       return;
     }
 
-    // Default (text, number, email, etc.)
-    entry.type = type;
-    entry.value = value;
+    // DEFAULT (text, number, date, etc.)
+    data[name] = field.value !== '' ? field.value : null;
   });
 
-  // Normalización final
-  Object.values(schema).forEach(field => {
-    if (field.type === 'radio' && field.value === null) {
-      field.value = null;
+  return data;
+};
+
+
+const schemaMap = {
+  // INT
+  int: [
+    'fc','er','pvc','sato2','gcs','eva','fio2','hgt_sv','edad'
+  ],
+
+  // DECIMAL
+  decimal: [
+    'peso','talla','tax','ttr','tet_altura'
+  ],
+
+  // BOOLEAN
+  boolean: [
+    'tet','s_foley','sng_sny','cvc','vvp_adm',
+    'monitor_cardiaco','csv','examen_fisico','vvp_ingreso',
+    'vvc','smpt','sonda_foley','sng','intubacion','vmi_vmni',
+    'hemograma','pbq_ck','gsa_gsv','hemocultivo','ecg',
+    'rx_torax','linea_arterial','eco','tac','tt','ttpa',
+    'naricera','mmv','hgt','solicita_servicios_religiosos'
+  ],
+
+  // SET (array → CSV string)
+  set: [
+    'inmovilizacion','heridas','caracteristicas_heridas',
+    'vendaje_heridas','habitos','frecuencia_habitos',
+    'alergias','vacunas','ant_morbidos','alt_sensorial',
+    'pupilas','via_aerea','oxigenoterapia','color_piel',
+    'secrecion','abdomen','otra','intestinal','urinaria'
+  ]
+};
+
+
+function normalizeIngresoPayload(payload) {
+  const out = {};
+
+  for (const [key, value] of Object.entries(payload)) {
+
+    // NULL explícito
+    if (value === '' || value === undefined) {
+      out[key] = null;
+      continue;
     }
 
-    if (field.type === 'checkbox' && field.multiple && field.value === null) {
-      field.value = [];
+    // INT
+    if (schemaMap.int.includes(key)) {
+      out[key] = value === null ? null : parseInt(value, 10);
+      if (Number.isNaN(out[key])) out[key] = null;
+      continue;
     }
-  });
 
-  return schema;
+    // DECIMAL
+    if (schemaMap.decimal.includes(key)) {
+      out[key] = value === null ? null : parseFloat(value);
+      if (Number.isNaN(out[key])) out[key] = null;
+      continue;
+    }
+
+    // BOOLEAN
+    if (schemaMap.boolean.includes(key)) {
+      out[key] = value === true || value === 'true' || value === 1;
+      continue;
+    }
+
+    // SET (array → string CSV)
+    if (schemaMap.set.includes(key)) {
+      if (Array.isArray(value)) {
+        out[key] = value.join(',');
+      } else if (value === false || value === null) {
+        out[key] = '';
+      } else {
+        out[key] = value;
+      }
+      continue;
+    }
+
+    // Default: string / date / time
+    out[key] = value;
+  }
+
+  return out;
 }
+

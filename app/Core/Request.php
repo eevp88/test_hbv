@@ -6,7 +6,25 @@ class Request
 {
     public static function json(): array
     {
-        return json_decode(file_get_contents('php://input'), true) ?? [];
+        $raw = file_get_contents('php://input');
+
+        if ($raw === '' || $raw === false) {
+            return [];
+        }
+
+        $data = json_decode($raw, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \RuntimeException(
+                'JSON inválido: ' . json_last_error_msg()
+            );
+        }
+
+        if (!is_array($data)) {
+            return [];
+        }
+
+        return $data;
     }
 
     public static function method(): string
