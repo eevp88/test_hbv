@@ -14,7 +14,7 @@ const cargarIngresos = async () => {
             { title: "Accionres", data: null, render: function (data, type, row) {
                 return `
                     <div class="btn-group btn-group-sm">
-                        <button class="btn btn-outline-primary" onclick="verIngreso(${row.id_ingreso})" title="Edit">
+                        <button class="btn btn-outline-primary" onclick="abrirModalAgregarIngreso(${row.id_ingreso})" title="Edit">
                         <span class="material-symbols-outlined" style="font-size: 16px;">edit</span>
                         </button>
                         <button class="btn btn-outline-secondary" onclick="verIngresoPDF(${row.id_ingreso})"  title="PDF">
@@ -123,7 +123,6 @@ const tx = {
             let param = tx.strQuery(params);
             url = `${url}?${param}`;
         } else if (method == "POST") {
-            
             config["body"] = JSON.stringify(body);
         }
 
@@ -158,14 +157,17 @@ const generarColorAvatar = (str) => {
     return `hsl(${hue}, 70%, 50%)`;
 }
 
-
-
+const toggleCheckbox = (checkboxId) => {
+    const checkbox = document.getElementById(checkboxId);
+    checkbox.checked = !checkbox.checked;
+}
 
 
 const abrirModalAgregarIngreso = async (id) => {
     // Cargar formulario vacío en el modal
+    let idFromulario = id ? "FormularioEdicionIngreso" : "FormularioIngreso";
     let html = `
-        <form>
+        <form id="${idFromulario}">
             <div class="card shadow-sm">
                 <div class="card-header">
                     <div class="card-title">
@@ -179,41 +181,35 @@ const abrirModalAgregarIngreso = async (id) => {
                     <div class="row g-2 high-density-row">
                         <div class="col-md-4">
                             <label class="form-label">Nombre Completo</label>
-                            <input class="form-control" placeholder="Nombres y Apellidos" type="text" />
+                            <input class="form-control" placeholder="Nombres y Apellidos" type="text" name="nombrePaciente" id="nombrePaciente" />
                         </div>
                         <div class="col-md-2">
-                            <label class="form-label">RUT / ID</label>
+                            <label class="form-label">RUT</label>
                             <input class="form-control" placeholder="12.345.678-9" type="text" />
                         </div>
                         <div class="col-md-1">
                             <label class="form-label">Edad</label>
-                            <input class="form-control" type="number" />
+                            <input class="form-control" type="number" name="edad" id="edad" />
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">Fecha Ingreso</label>
-                            <input class="form-control" type="date" />
+                            <input class="form-control" type="date" name="fechaIngreso" id="fechaIngreso" />
                         </div>
                         <div class="col-md-1">
                             <label class="form-label">Hora</label>
-                            <input class="form-control" type="time" />
+                            <input class="form-control" type="time" name="horaIngreso" id="horaIngreso" />
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">N° Ficha</label>
-                            <input class="form-control" type="text" />
+                            <input class="form-control" type="text" name="nroFicha" id="nroFicha" />
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label class="form-label">Procedencia</label>
-                            <select class="form-select">
-                                <option disabled="" selected="">Seleccione...</option>
-                                <option>Urgencias</option>
-                                <option>Consultorio/Policlínico</option>
-                                <option>Traslado Externo</option>
-                                <option>Domicilio</option>
-                            </select>
+                            <input class="form-control" type="text" name="procedencia" id="procedencia" />
                         </div>
                         <div class="col-md-9">
                             <label class="form-label">Diagnóstico Médico de Ingreso</label>
-                            <input class="form-control" placeholder="Diagnóstico principal y secundarios" type="text" />
+                            <input class="form-control" placeholder="Diagnóstico principal y secundarios" type="text" name="diagnosticoIngreso" id="diagnosticoIngreso" />
                         </div>
                     </div>
                 </div>
@@ -224,7 +220,7 @@ const abrirModalAgregarIngreso = async (id) => {
                         <div class="section-icon-bg bg-light text-secondary">
                             <span class="material-symbols-outlined">vital_signs</span>
                         </div>
-                        Signos Vitales y Examen Físico General
+                        Signos Vitales y Anamnesis
                     </div>
                 </div>
                 <div class="card-body p-3">
@@ -244,21 +240,21 @@ const abrirModalAgregarIngreso = async (id) => {
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" />
+                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" name="fc" id="fc" />
                                     </td>
-                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" />
-                                    </td>
-                                    <td><input class="form-control form-control-sm border-0 text-center"
-                                            placeholder="120/80" type="text" /></td>
-                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" />
-                                    </td>
-                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" />
+                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" name="fr" id="fr" />
                                     </td>
                                     <td><input class="form-control form-control-sm border-0 text-center"
-                                            placeholder="21%" type="text" /></td>
-                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" />
+                                            placeholder="120/80" type="text" name="pa" id="pa" /></td>
+                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" name="tempAx" id="tempAx" />
                                     </td>
-                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" />
+                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" name="satO2" id="satO2" />
+                                    </td>
+                                    <td><input class="form-control form-control-sm border-0 text-center"
+                                            placeholder="21%" type="text" name="fio2" id="fio2" /></td>
+                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" name="hgt" id="hgt" />
+                                    </td>
+                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" name="eva" id="eva" />
                                     </td>
                                 </tr>
                             </tbody>
@@ -267,24 +263,17 @@ const abrirModalAgregarIngreso = async (id) => {
                     <div class="row g-2">
                         <div class="col-md-2">
                             <label class="form-label">Peso (Kg)</label>
-                            <input class="form-control" step="0.1" type="number" />
+                            <input class="form-control" step="0.1" type="number" name="peso" id="peso" />
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">Talla (cm)</label>
-                            <input class="form-control" type="number" />
+                            <input class="form-control" type="number" name="talla" id="talla" />
                         </div>
-                        <div class="col-md-2">
-                            <label class="form-label">IMC</label>
-                            <input class="form-control bg-light" readonly="" type="text" />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Estado de Conciencia (GCS)</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-white small">Puntos:</span>
-                                <input class="form-control" placeholder="15" type="number" />
-                                <input class="form-control w-50" placeholder="Observaciones de conciencia"
-                                    type="text" />
-                            </div>
+
+                         <div class="col-md-8">
+                            <label class="form-label">Anamnesis</label>
+                            <textarea class="form-control"
+                                placeholder="Información relevante para la entrega de turno..." rows="2" name="anamnesis" id="anamnesis"></textarea>
                         </div>
                     </div>
                 </div>
@@ -300,207 +289,1159 @@ const abrirModalAgregarIngreso = async (id) => {
                 </div>
                 <div class="card-body p-3">
                     <div class="mb-4">
-                        <h6 class="sub-section-title">Actividad y Reposo</h6>
+                        <h6 class="sub-section-title">Comunicación</h6>
                         <div class="row g-3">
-                            <div class="col-md-4">
-                                <label class="form-label">Patrón de Sueño</label>
-                                <select class="form-select">
-                                    <option>Normal / Reparador</option>
-                                    <option>Insomnio</option>
-                                    <option>Fragmentado</option>
-                                    <option>Usa fármacos para dormir</option>
+                            <div class="col-md-3">
+                                <label class="form-label">Conciencia</label>
+                                <select class="form-select" name="conciencia" id="conciencia">
+                                    <option value="">Seleccione...</option>
+                                    <option value="CONCIENTE">CONCIENTE</option>
+                                    <option value="DESORIENTADO">DESORIENTADO</option>
+                                    <option value="LETARGICO">LETARGICO</option>
+                                    <option value="INCONCIENCIA/COMA">INCONCIENCIA/COMA</option>
+                                    <option value="EBRIO">EBRIO</option>
                                 </select>
                             </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Movilidad Física</label>
-                                <select class="form-select">
-                                    <option>Autónomo</option>
-                                    <option>Requiere ayuda (Bastón/Andador)</option>
-                                    <option>Silla de Ruedas</option>
-                                    <option>Postrado</option>
+
+                            <div class="col-md-3">
+                                <label class="form-label">Com. Verbal</label>
+                                <select class="form-select" name="comu_verbal" id="comu_verbal">
+                                    <option value="">Seleccione...</option>
+                                    <option value="COMPLETA COHERENTE">COMPLETA COHERENTE</option>
+                                    <option value="PARCIAL">PARCIAL</option>
+                                    <option value="AUSENTE">AUSENTE</option>
+                                    <option value="DISARTRIA">DISARTRIA</option>
                                 </select>
                             </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Capacidad de Autocuidado (Índice Barthel)</label>
-                                <input class="form-control" placeholder="Puntaje / Clasificación" type="text" />
+
+                            <div class="col-md-3">
+                                <label class="form-label">Alt. Sensorial</label>
+                                <select class="form-select" name="alt_sensorial" id="alt_sensorial">
+                                    <option value="">Seleccione...</option>
+                                    <option value="VISUAL">VISUAL</option>
+                                    <option value="AUDITIVA">AUDITIVA</option>
+                                    <option value="LENTES">LENTES</option>
+                                    <option value="AUDIFONOS">AUDIFONOS</option>
+                                </select>
                             </div>
-                            <div class="col-12">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" id="act1" type="checkbox" />
-                                    <label class="form-check-label small" for="act1">Disnea de esfuerzo</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" id="act2" type="checkbox" />
-                                    <label class="form-check-label small" for="act2">Fatiga crónica</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" id="act3" type="checkbox" />
-                                    <label class="form-check-label small" for="act3">Contracturas/Atrofia</label>
-                                </div>
+
+
+                             <div class="col-md-3">
+                                <label class="form-label">Boca</label>
+                                <select class="form-select" name="boca" id="boca">
+                                    <option value="">Seleccione...</option>
+                                    <option value="SANA">SANA</option>
+                                    <option value="CON LESIONES">CON LESIONES</option>
+                                    <option value="EDENTADO">EDENTADO</option>
+                                    <option value="PROTESIS">PROTESIS</option>
+                                </select>
+                            </div>
+
+
+                             <div class="col-md-3">
+                                <label class="form-label">Pupilas</label>
+                                <select class="form-select" name="pupilas" id="pupilas">
+                                    <option value="">Seleccione...</option>
+                                    <option value="ISOCORIA">ISOCORIA</option>
+                                    <option value="ANISOCORIA">ANISOCORIA</option>
+                                    <option value="MIOSIS">MIOSIS</option>
+                                    <option value="MIDRIASIS">MIDRIASIS</option>
+                                    <option value="RFM">RFM</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-9">
+                                <label class="form-label">Observación </label>
+                                <textarea class="form-control" name="observacion_comunicacion" id="observacion_comunicacion"
+                                placeholder="Información relevante para la entrega de turno..." rows="2"></textarea>
                             </div>
                         </div>
                     </div>
                     <hr class="my-3 opacity-10" />
                     <div class="mb-4">
-                        <h6 class="sub-section-title">Percepción y Cognición</h6>
+                        <h6 class="sub-section-title">Oxigenación</h6>
                         <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Estado Sensorial</label>
-                                <div class="d-flex gap-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" id="sens1" type="checkbox" />
-                                        <label class="form-check-label small" for="sens1">Déficit Visual
-                                            (Lentes)</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" id="sens2" type="checkbox" />
-                                        <label class="form-check-label small" for="sens2">Déficit Auditivo
-                                            (Audífono)</label>
-                                    </div>
-                                </div>
+
+                             <div class="col-md-3">
+                                <label class="form-label">Via. Aérea</label>
+                                <select class="form-select" name="via_aerea" id="via_aerea">
+                                    <option value="">Seleccione...</option>
+                                    <option value="NORMAL">NORMAL</option>
+                                    <option value="DISNEA">DISNEA</option>
+                                    <option value="POLIPNEA">POLIPNEA</option>
+                                    <option value="PARADOJAL">PARADOJAL</option>
+                                    <option value="GASPING">GASPING</option>
+                                    <option value="APNEA">APNEA</option>
+                                </select>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Orientación</label>
+
+
+                             <div class="col-md-3">
+                                <label class="form-label">Respiracion</label>
+                                <select class="form-select" name="respiracion" id="respiracion">
+                                    <option value="">Seleccione...</option>
+                                    <option value="PERMEABLE">PERMEABLE</option>
+                                    <option value="SECRECIONES">SECRECIONES</option>
+                                    <option value="CANULA MAYO">CANULA MAYO</option>
+                                    <option value="TOT">TOT</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label">Oxigenoterapia</label>
+                                <select class="form-select" name="oxigenoterapia" id="oxigenoterapia">
+                                    <option value="">Seleccione...</option>
+                                    <option value="BIGOTERA">BIGOTERA</option>
+                                    <option value="MMV">MMV</option>
+                                    <option value="MAF">MAF</option>
+                                    <option value="TUBO T">TUBO T</option>
+                                    <option value="AMBU">AMBÚ</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label">Tos</label>
+                                <select class="form-select" name="tos" id="tos">
+                                    <option value="">Seleccione...</option>
+                                    <option value="AUSENTE">AUSENTE</option>
+                                    <option value="SECA">SECA</option>
+                                    <option value="PRODUCTIVA">PRODUCTIVA</option>
+                                    <option value="INFECTIVA">INFECTIVA</option>
+                                </select>
+                            </div>
+
+
+
+
+                            <div class="col-md-3">
+                                <label class="form-label">Color Piel</label>
                                 <div class="d-flex gap-2">
                                     <div class="form-check">
-                                        <input checked="" class="form-check-input" type="checkbox" />
-                                        <label class="form-check-label small">Tiempo</label>
+                                        <input  type="checkbox" class="form-check-input" name="color_piel[]" value="ROSADA">
+                                        <label class="form-check-label small">ROSADA</label>
                                     </div>
                                     <div class="form-check">
-                                        <input checked="" class="form-check-input" type="checkbox" />
-                                        <label class="form-check-label small">Espacio</label>
+                                        <input  type="checkbox" class="form-check-input" name="color_piel[]" value="PALIDA">
+                                        <label class="form-check-label small">PALIDA</label>
                                     </div>
-                                    <div class="form-check">
-                                        <input checked="" class="form-check-input" type="checkbox" />
-                                        <label class="form-check-label small">Persona</label>
+                                    <div class="form-check">                                        
+                                        <input  class="form-check-input" type="checkbox" name="color_piel[]" value="CIANOTICA">
+                                        <label class="form-check-label small">CIANÓTICA</label>
+                                    </div>
+
+                                    <div class="form-check">                                        
+                                        <input  class="form-check-input" type="checkbox" name="color_piel[]" value="LIVIDECES">
+                                        <label class="form-check-label small">LIVIDECES</label>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <label class="form-label">Observaciones Cognitivas (Confusión, Memoria,
-                                    Lenguaje)</label>
-                                <textarea class="form-control" rows="1"></textarea>
+
+
+                           
+                            <div class="col-md-3">
+                                <label class="form-label">Secreción</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="secrecion[]" value="MUCOSA">
+                                        <label class="form-check-label small">MUCOSA</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="secrecion[]" value="PURULENTA">
+                                        <label class="form-check-label small">PURULENTA</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="secrecion[]" value="HEMATICA">
+                                        <label class="form-check-label small">HEMATICA</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="secrecion[]" value="ABUNDANTE">
+                                        <label class="form-check-label small">ABUNDANTE</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="secrecion[]" value="REGULAR">
+                                        <label class="form-check-label small">REGULAR</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="secrecion[]" value="ESCASA">
+                                        <label class="form-check-label small">ESCASA</label>
+                                    </div>
+                                </div>
                             </div>
+
+                             <div class="col-md-6">
+                                <label class="form-label">Observación </label>
+                                <textarea class="form-control" name="observacion_oxigenacion" id="observacion_oxigenacion"
+                                placeholder="Información relevante para la entrega de turno..." rows="2" ></textarea>
+                            </div>
+
                         </div>
                     </div>
                     <hr class="my-3 opacity-10" />
                     <div class="mb-4">
-                        <h6 class="sub-section-title">Autocuidado y Eliminación</h6>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Eliminación Urinaria</label>
-                                <select class="form-select mb-2">
-                                    <option>Espontánea</option>
-                                    <option>Incontinencia</option>
-                                    <option>Retención</option>
-                                    <option>Disuria</option>
-                                    <option>Sonda Folley / Talla Vesical</option>
-                                </select>
-                                <input class="form-control form-control-sm" placeholder="Características de la orina"
-                                    type="text" />
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Eliminación Intestinal</label>
-                                <select class="form-select mb-2">
-                                    <option>Normal</option>
-                                    <option>Estreñimiento</option>
-                                    <option>Diarrea</option>
-                                    <option>Ostomía</option>
-                                </select>
-                                <input class="form-control form-control-sm" placeholder="Frecuencia y consistencia"
-                                    type="text" />
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="my-3 opacity-10" />
-                    <div class="mb-4">
-                        <h6 class="sub-section-title">Sexualidad y Reproducción</h6>
+                        <h6 class="sub-section-title">Nutrición e Hidratación</h6>
                         <div class="row g-3">
                             <div class="col-md-4">
-                                <label class="form-label">FUR (Mujeres)</label>
-                                <input class="form-control" type="date" />
+                                <label class="form-label">Estado Nutricional</label>
+                                <select class="form-select mb-2" name="estado_nutricional" required> 
+                                    <option value="">Seleccione...</option>
+                                    <option value="NORMAL">NORMAL</option> 
+                                    <option value="ENFLAQUECIDO">ENFLAQUECIDO</option> 
+                                    <option value="DESNUTRIDO">DESNUTRIDO</option> 
+                                    <option value="OBESO">OBESO</option> 
+                                </select>
                             </div>
-                            <div class="col-md-8">
-                                <label class="form-label">Problemas o inquietudes expresadas</label>
-                                <input class="form-control" placeholder="Disfunción, menopausia, etc." type="text" />
+
+                            <div class="col-md-4">
+                                <label class="form-label">Apetito</label>
+                                <select class="form-select mb-2" name="apetito" required> 
+                                    <option value="">Seleccione...</option>
+                                    <option value="BUENO">BUENO</option> 
+                                    <option value="REGULAR">REGULAR</option> 
+                                    <option value="MALO">MALO</option> 
+                                </select>
+                            </div>
+
+
+
+                            <div class="col-md-4">
+                                <label class="form-label">Piel y Mucosas</label>
+                                <select class="form-select mb-2" name="piel_mucosas" required> 
+                                    <option value="">Seleccione...</option>
+                                    <option value="HIDRATADA">HIDRATADA</option> 
+                                    <option value="DESHIDRATADA">DESHIDRATADA</option> 
+                                    <option value="EDEMA">EDEMA</option> 
+                                    <option value="SIN EDEMA">SIN EDEMA</option> 
+                                    <option value="ICTERICIA">ICTERICIA</option> 
+                                </select>
+                            </div>
+
+
+
+                             <div class="col-md-3">
+                                <label class="form-label">Abdomen</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="abdomen[]" value="BLANDO">
+                                        <label class="form-check-label small">BLANDO</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="abdomen[]" value="DEPRESIBLE">
+                                        <label class="form-check-label small">DEPRESIBLE</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="abdomen[]" value="DOLOROSO">
+                                        <label class="form-check-label small">DOLOROSO</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="abdomen[]" value="DISTENDIDO">
+                                        <label class="form-check-label small">DISTENDIDO</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="abdomen[]" value="ASCITIS">
+                                        <label class="form-check-label small">ASCITIS</label>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label">Abdomen</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="otra[]" value="SNG/SNY">
+                                        <label class="form-check-label small">SNG/SNY</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="otra[]" value="GASTRO">
+                                        <label class="form-check-label small">GASTRO</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="otra[]" value="YEYUNO">
+                                        <label class="form-check-label small">YEYUNO</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="otra[]" value="ENTERAL">
+                                        <label class="form-check-label small">ENTERAL</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="otra[]" value="PARENTERAL">
+                                        <label class="form-check-label small">PARENTERAL</label>
+                                    </div>  
+                                </div>
+                            </div>
+
+                             <div class="col-md-6">
+                                <label class="form-label">Observación </label>
+                                <textarea class="form-control" name="observacion_nutricion" id="observacion_nutricion"
+                                placeholder="Información relevante para la entrega de turno..." rows="2" ></textarea>
+                            </div>
+
+
+                            
+                        </div>
+                    </div>
+                    <hr class="my-3 opacity-10" />
+                    <div class="mb-4">
+                        <h6 class="sub-section-title">Eliminación</h6>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Intestinal</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="intestinal[]" value="DIARREA">
+                                        <label class="form-check-label small">DIARREA</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="intestinal[]" value="INCONTINENCIA">
+                                        <label class="form-check-label small">INCONTINENCIA</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="intestinal[]" value="RECTORRAGIA">
+                                        <label class="form-check-label small">RECTORRAGIA</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="intestinal[]" value="MELENA">
+                                        <label class="form-check-label small">MELENA</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="intestinal[]" value="ESTREÑIMIENTO">
+                                        <label class="form-check-label small">ESTREÑIMIENTO</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="intestinal[]" value="ACOLIA">
+                                        <label class="form-check-label small">ACOLIA</label>
+                                    </div>
+
+                                     <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="intestinal[]" value="PAÑALES">
+                                        <label class="form-check-label small">PAÑALES</label>
+                                    </div>
+
+                                     <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="intestinal[]" value="OSTOMIA">
+                                        <label class="form-check-label small">OSTOMIA</label>
+                                    </div>
+                                   
+                                </div>
+                            </div> 
+
+                             <div class="col-md-4">
+                                <label class="form-label">Urinaria</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" class="form-check-input" name="urinaria[]" value="INCONTINENCIA">
+                                        <label class="form-check-label small">INCONTINENCIA</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" class="form-check-input" name="urinaria[]" value="RETENCION">
+                                        <label class="form-check-label small">RETENCION</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" class="form-check-input" name="urinaria[]" value="DISURIA">
+                                        <label class="form-check-label small">DISURIA</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" class="form-check-input" name="urinaria[]" value="TENESMO">
+                                        <label class="form-check-label small">TENESMO</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" class="form-check-input" name="urinaria[]" value="PAÑALES">
+                                        <label class="form-check-label small">PAÑALES</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" class="form-check-input" name="urinaria[]" value="SONDA FOLEY">
+                                        <label class="form-check-label small">SONDA FOLEY</label>
+                                    </div>
+    
+                                </div>
+                            </div> 
+
+                            <div class="col-md-4">
+                                <label class="form-label">Patrón de Sueño</label>
+                                <select class="form-select mb-2" name="patron_sueno" required> 
+                                    <option value="">Seleccione...</option> 
+                                    <option value="NORMAL">NORMAL</option>
+                                    <option value="DISCONTINUO">DISCONTINUO</option> 
+                                    <option value="INSOMNIO">INSOMNIO</option> 
+                                    <option value="MEDICACION">MEDICACION</option> 
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label">Vestirse/Desvestirse</label>
+                                <select class="form-select mb-2" name="vestrise_desvestrise" required>
+                                    <option value="">Seleccione...</option>
+                                    <option value="AUTONOMO">AUTONOMO</option>
+                                    <option value="AYUDA PARCIAL">AYUDA PARCIAL</option>
+                                    <option value="AYUDA TOTAL">AYUDA TOTAL</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label">Aprendizaje</label>
+                                <select class="form-select mb-2" name="aprendizaje" required>
+                                    <option value="">Seleccione...</option> 
+                                    <option value="LECTURA">LECTURA</option> 
+                                    <option value="TELEVISION">TELEVISION</option> 
+                                    <option value="MANUALIDADES">MANUALIDADES</option> 
+                                    <option value="DEPORTE">DEPORTE</option> 
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Observación </label>
+                                <textarea class="form-control" name="observacion_eliminacion" id="observacion_eliminacion"
+                                placeholder="Información relevante para la entrega de turno..." rows="2" ></textarea>
                             </div>
                         </div>
                     </div>
                     <hr class="my-3 opacity-10" />
                     <div class="mb-4">
-                        <h6 class="sub-section-title">Afrontamiento y Tolerancia al Estrés</h6>
+                        <h6 class="sub-section-title">Creencias y Valores</h6>
                         <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Reacción frente a la hospitalización</label>
-                                <select class="form-select">
-                                    <option>Tranquilo / Colaborador</option>
-                                    <option>Ansioso / Angustiado</option>
-                                    <option>Agresivo / Hostil</option>
-                                    <option>Indiferente / Retraído</option>
+                            <div class="col-md-3">
+                                <label class="form-label"></label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="form-check form-check-inline">
+                                        <input pe="checkbox" class="form-check-input" name="religioso" value="">
+                                        <label class="form-check-label small">SOLICITA SERVICIOS RELIGIOSOS</label>
+                                    </div>
+                                </div>
+                            </div> 
+
+                        </div>
+                    </div>
+                    <hr class="my-3 opacity-10" />
+                    <div class="mb-4">
+                        <h6 class="sub-section-title">Movilización</h6>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Actividad/Movilidad</label>
+                                <select class="form-select mb-2" name="actividad" required> 
+                                    <option value="">Seleccione...</option> 
+                                    <option value="MOVILIZA SOLO">MOVILIZA SOLO</option>
+                                    <option value="MOVILIZA CON AYUDA">MOVILIZA CON AYUDA</option> 
+                                    <option value="NO SE MOVILIZA">NO SE MOVILIZA</option>
+                                </select>
+                            </div> 
+
+                            <div class="col-md-4">
+                                <label class="form-label">Actividad/Movilidad</label>
+                                <select class="form-select mb-2" name="actividad" required> 
+                                    <option value="">Seleccione...</option> 
+                                    <option value="MOVILIZA SOLO">MOVILIZA SOLO</option>
+                                    <option value="MOVILIZA CON AYUDA">MOVILIZA CON AYUDA</option> 
+                                    <option value="NO SE MOVILIZA">NO SE MOVILIZA</option>
+                                </select>
+                            </div> 
+
+
+
+                            <div class="col-md-4">
+                                <label class="form-label">Inmovilización</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" class="form-check-input" name="inmovilizacion[]" value="TABLA ESPINAL">
+                                        <label class="form-check-label small">TABLA ESPINAL</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" class="form-check-input" name="inmovilizacion[]" value="COLLAR">
+                                        <label class="form-check-label small">COLLAR</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" class="form-check-input" name="inmovilizacion[]" value="FERULA">
+                                        <label class="form-check-label small">FERULA</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" class="form-check-input" name="inmovilizacion[]" value="VALVA YESO">
+                                        <label class="form-check-label small">VALVA YESO</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label class="form-label">Fuerza</label>
+                                <select class="form-select mb-2" name="fuerza_muscular" required> 
+                                    <option value="">Seleccione...</option> 
+                                    <option value="NORMAL">NORMAL</option> 
+                                    <option value="DISMINUIDA">DISMINUIDA</option> 
+                                </select>
+                            </div> 
+
+                            <div class="col-md-4">
+                                <label class="form-label">Sensibilidad</label>
+                                <select class="form-select mb-2" name="sensibilidad" required> 
+                                    <option value="">Seleccione...</option> 
+                                    <option value="NORMAL">NORMAL</option> 
+                                    <option value="DISMINUIDA">DISMINUIDA</option>
+                                    <option value="AUMENTADA">AUMENTADA</option> 
+                                </select>
+                            </div> 
+
+                            <div class="col-md-4">
+                                <label class="form-label">Observación </label>
+                                <textarea class="form-control" name="observacion_movilizacion" id="observacion_movilizacion"
+                                placeholder="Información relevante para la entrega de turno..." rows="2" ></textarea>
+                            </div>
+                       
+
+                        </div>
+                    </div>
+                    <hr class="my-3 opacity-10" />
+                       <div class="mb-4">
+                        <h6 class="sub-section-title">Higiene</h6>
+                        <div class="row g-3">
+
+                            <div class="col-md-4">
+                                <label class="form-label">Higiene</label>
+                                <select class="form-select mb-2" name="higiene" required> 
+                                    <option value="">Seleccione...</option> 
+                                    <option value="ASEADO">ASEADO</option>
+                                    <option value="DESASEADO">DESASEADO</option>
+                                    <option value="AUTONOMO">AUTONOMO</option>
+                                    <option value="AYUDA PARCIAL">AYUDA PARCIAL</option>
+                                    <option value="AYUDA TOTAL">AYUDA TOTAL</option>
                                 </select>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Red de Apoyo Familiar</label>
-                                <select class="form-select">
-                                    <option>Presente y Activa</option>
-                                    <option>Presente pero limitada</option>
-                                    <option>Ausente / Abandono</option>
+
+                            <div class="col-md-4">
+                                <label class="form-label">Estado de la piel</label>
+                                <select class="form-select mb-2" name="estado_piel" required> 
+                                    <option value="">Seleccione...</option> 
+                                    <option value="INTEGRA/HIDRATADA">INTEGRA/HIDRATADA</option>
+                                    <option value="DESHIDRATADA">DESHIDRATADA</option>
+                                    <option value="SUDOROSA">SUDOROSA</option>
                                 </select>
                             </div>
-                            <div class="col-12">
-                                <label class="form-label">Principales Temores / Preocupaciones</label>
-                                <input class="form-control" type="text" />
+
+                            <div class="col-md-4">
+                                <label class="form-label">Heridas</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="heridas[]" value="OPERATORIA">
+                                        <label class="form-check-label small">OPERATORIA</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="heridas[]" value="CORTANTE">
+                                        <label class="form-check-label small">CORTANTE</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="heridas[]" value="ULCERA">
+                                        <label class="form-check-label small">ULCERA</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input   type="checkbox" class="form-check-input" name="heridas[]" value="QUEMADURA">
+                                        <label class="form-check-label small">QUEMADURA</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input   type="checkbox" class="form-check-input" name="heridas[]" value="CONTUSA">
+                                        <label class="form-check-label small">CONTUSA</label>
+                                    </div>
+                                </div>
                             </div>
+
+
+
+                            <div class="col-md-4">
+                                <label class="form-label">Caracteristicas Heridas</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="caracteristicas_heridas[]" value="LIMPIA">
+                                        <label class="form-check-label small">LIMPIA</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="caracteristicas_heridas[]" value="SUCIA">
+                                        <label class="form-check-label small">SUCIA</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="caracteristicas_heridas[]" value="CONTAMINADA">
+                                        <label class="form-check-label small">CONTAMINADA</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input   type="checkbox" class="form-check-input" name="caracteristicas_heridas[]" value="INFECTADA">
+                                        <label class="form-check-label small">INFECTADA</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input   type="checkbox" class="form-check-input" name="caracteristicas_heridas[]" value="ABRASIVA">
+                                        <label class="form-check-label small">ABRASIVA</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label">Vendajes Heridas</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="vendaje_heridas[]" value="LIMPIO">
+                                        <label class="form-check-label small">LIMPIO</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="vendaje_heridas[]" value="SUCIOS">
+                                        <label class="form-check-label small">SUCIOS</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="vendaje_heridas[]" value="FIJOS">
+                                        <label class="form-check-label small">FIJOS</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input   type="checkbox" class="form-check-input" name="vendaje_heridas[]" value="SIN VENDAJE">
+                                        <label class="form-check-label small">SIN VENDAJE</label>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label">Observación </label>
+                                <textarea class="form-control" name="observacion_heridas" id="observacion_heridas"
+                                placeholder="Información relevante para la entrega de turno..." rows="2" ></textarea>
+                            </div>
+                       
                         </div>
                     </div>
                     <hr class="my-3 opacity-10" />
                     <div>
-                        <h6 class="sub-section-title">Seguridad y Protección</h6>
+                        <h6 class="sub-section-title">Seguridad</h6>
                         <div class="row g-3">
-                            <div class="col-md-4">
-                                <label class="form-label">Puntaje Riesgo Caídas (Downton)</label>
-                                <input class="form-control" placeholder="Ej: 3 (Alto Riesgo)" type="number" />
+
+                            <div class="col-md-3">
+                                <label class="form-label">Habitos</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="habitos[]" value="ALCOHOL">
+                                        <label class="form-check-label small">ALCOHOL</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="habitos[]" value="TABACO">
+                                        <label class="form-check-label small">TABACO</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="habitos[]" value="DROGAS">
+                                        <label class="form-check-label small">DROGAS</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input   type="checkbox" class="form-check-input" name="habitos[]" value="VIF">
+                                        <label class="form-check-label small">VIF</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input   type="checkbox" class="form-check-input" name="habitos[]" value="MALTRATO">
+                                        <label class="form-check-label small">MALTRATO</label>
+                                    </div>
+                                    
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Puntaje Riesgo UPP (Braden)</label>
-                                <input class="form-control" placeholder="Ej: 14 (Riesgo Moderado)" type="number" />
+
+                            <div class="col-md-3">
+                                <label class="form-label">Frecuencia Habitos</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="frecuencia_habitos[]" value="AISLADO">
+                                        <label class="form-check-label small">AISLADO</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="frecuencia_habitos[]" value="OCASIONAL">
+                                        <label class="form-check-label small">OCASIONAL</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="frecuencia_habitos[]" value="FRECUENTE">
+                                        <label class="form-check-label small">FRECUENTE</label>
+                                    </div>  
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Integridad de la Piel</label>
-                                <select class="form-select">
-                                    <option>Intacta</option>
-                                    <option>Lesionada (Especifique en observaciones)</option>
-                                    <option>Equimosis / Hematomas</option>
+
+                            <div class="col-md-3">
+                                <label class="form-label">Alergias</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="alergias[]" value="MEDICAMENTOS">
+                                        <label class="form-check-label small">MEDICAMENTOS</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="alergias[]" value="ANESTESIA">
+                                        <label class="form-check-label small">ANESTESIA</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="alergias[]" value="ALIMENTOS">
+                                        <label class="form-check-label small">ALIMENTOS</label>
+                                    </div>  
+                                     <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="alergias[]" value="INSECTOS">
+                                        <label class="form-check-label small">INSECTOS</label>
+                                    </div>  
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <label class="form-label">Estado Temperancia</label>
+                                <select class="form-select mb-2" name="estado_temperancia" required> 
+                                    <option value="">Seleccione...</option> 
+                                    <option value="SOBRIO">SOBRIO</option> 
+                                    <option value="ALIENTO ETILICO">ALIENTO ETILICO</option>
+                                    <option value="EBRIO">EBRIO</option> 
+                                    <option value="COMA ETILICO">COMA ETILICO</option> 
                                 </select>
                             </div>
-                            <div class="col-12">
-                                <label class="form-label">Alergias Conocidas</label>
-                                <input class="form-control border-danger"
-                                    placeholder="Medicamentos, Alimentos, Látex, etc." type="text" />
+
+                           <div class="col-md-3">
+                                <label class="form-label">Vacunas</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="vacunas[]" value="ANTIRRABICA">
+                                        <label class="form-check-label small">ANTIRRABICA</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="vacunas[]" value="TETANOS">
+                                        <label class="form-check-label small">TETANOS</label>
+                                    </div>
+                                   
+                                </div>
                             </div>
-                            <div class="col-12">
-                                <label class="form-label">Vías Invasivas al Ingreso</label>
-                                <div class="p-2 border rounded bg-light">
+
+                            <div class="col-md-3">
+                                <label class="form-label">Antecedentes Morbidos</label>
+                                <div class="d-flex flex-wrap gap-2">
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" id="via1" type="checkbox" />
-                                        <label class="form-check-label small" for="via1">VVP</label>
+                                        <input  type="checkbox" class="form-check-input" name="ant_morbidos[]" value="HTA">
+                                        <label class="form-check-label small">HTA</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" id="via2" type="checkbox" />
-                                        <label class="form-check-label small" for="via2">CVC</label>
+                                        <input  type="checkbox" class="form-check-input" name="ant_morbidos[]" value="DM">
+                                        <label class="form-check-label small">DM</label>
                                     </div>
+
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" id="via3" type="checkbox" />
-                                        <label class="form-check-label small" for="via3">SNG/SNY</label>
+                                        <input  type="checkbox" class="form-check-input" name="ant_morbidos[]" value="EPI">
+                                        <label class="form-check-label small">EPI</label>
                                     </div>
+
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" id="via4" type="checkbox" />
-                                        <label class="form-check-label small" for="via4">Drenajes</label>
+                                        <input type="checkbox" class="form-check-input" name="ant_morbidos[]" value="ERC">
+                                        <label class="form-check-label small">ERC</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input  type="checkbox" class="form-check-input" name="ant_morbidos[]" value="EPOC">
+                                        <label class="form-check-label small">EPOC</label>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Observación </label>
+                                <textarea class="form-control" name="observacion_seguridad" id="observacion_seguridad"
+                                placeholder="Información relevante para la entrega de turno..." rows="2" ></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <hr class="my-3 opacity-10" />
+                    <div>
+                        <h6 class="sub-section-title">Termoregulación</h6>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Estado Temperancia</label>
+                                <select class="form-select mb-2" name="estado_termorregulacion" required> 
+                                    <option value="">Seleccione...</option> 
+                                    <option value="NORMAL">NORMAL</option> 
+                                    <option value="HIPOTERMICO">HIPOTERMICO</option> 
+                                    <option value="HIPERTERMICO">HIPERTERMICO</option> 
+                                </select>
+                            </div>
+
+                            <div class="col-md-8">
+                                <label class="form-label">Observación </label>
+                                <textarea class="form-control" name="observacion_termorregulacion" id="observacion_termorregulacion"
+                                placeholder="Información relevante para la entrega de turno..." rows="2" ></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+                    
+                    <hr class="my-3 opacity-10" />
+                    <div>
+                        <h6 class="sub-section-title">Realización Personal</h6>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Situacion Laboral</label>
+                                <select class="form-select mb-2" name="situacion_laboral" required> 
+                                    <option value="">Seleccione...</option> 
+                                    <option value="CESANTE">CESANTE</option> 
+                                    <option value="TRABAJA">TRABAJA</option> 
+                                    <option value="JUBILADO">JUBILADO</option> 
+                                    <option value="INVALIDEZ">INVALIDEZ</option> 
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label">Estado Animico</label>
+                                <select class="form-select mb-2" name="estado_animico" required> 
+                                    <option value="">Seleccione...</option> 
+                                    <option value="TRANQUILO">TRANQUILO</option> 
+                                    <option value="TRISTE/DEPRESION">TRISTE/DEPRESION</option> 
+                                    <option value="EUFORICO">EUFORICO</option> 
+                                    <option value="ANSIOSO">ANSIOSO</option> 
+                                    <option value="AGRESIVO">AGRESIVO</option> 
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label">Red de Apoyo</label>
+                                <select class="form-select mb-2" name="red_apoyo" required> 
+                                    <option value="">Seleccione...</option> 
+                                    <option value="VIVE SOLO">VIVE SOLO</option> 
+                                    <option value="VIVE CON FAMILIA">VIVE CON FAMILIA</option> 
+                                    <option value="HOGAR">HOGAR</option> 
+                                    <option value="ABANDONO">ABANDONO</option> 
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Acompañado</label>
+                                <select class="form-select mb-2" name="acompañamiento" required> 
+                                    <option value="">Seleccione...</option> 
+                                    <option value="FAMILIAR">FAMILIAR</option> 
+                                    <option value="AMIGO">AMIGO</option> 
+                                    <option value="CUIDADOR">CUIDADOR</option> 
+                                    <option value="FUNCIONARIO">FUNCIONARIO</option> 
+                                    <option value="SOLO">SOLO</option> col-md-offset-3
+                                </select>
+                            </div>
+
+                            <div class="col-md-8">
+                                <label class="form-label">Observación </label>
+                                <textarea class="form-control" name="observacion_realizacion_personal" id="observacion_realizacion_personal"
+                                placeholder="Información relevante para la entrega de turno..." rows="2" ></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <hr class="my-3 opacity-10" />
+                    <div>
+                        <h6 class="sub-section-title">Procedimentos Administrados</h6>
+                        <div class="row g-3">
+                             <!-- TET -->
+                        <div class="col-md-12">
+                            <div class="procedure-item">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="tet" name="tet" value="SI">
+                                            <label class="form-check-label procedure-label" for="tet">
+                                                TET
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text">Altura:</span>
+                                            <input type="number" class="form-control" name="tet_altura" id="tet_altura" placeholder="cm" step="0.1">
+                                            <span class="input-group-text">cm</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text">Fecha Instalación:</span>
+                                            <input type="datetime-local" class="form-control" name="tet_fecha" id="tet_fecha">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- S. FOLEY -->
+                        <div class="col-md-12">
+                            <div class="procedure-item">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="s_foley" name="s_foley" value="SI">
+                                            <label class="form-check-label procedure-label" for="s_foley">
+                                                S. FOLEY
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="offset-md-3 col-md-7">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text">Fecha Instalación:</span>
+                                            <input type="datetime-local" class="form-control" name="s_foley_fecha" id="s_foley_fecha">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SNG/SNY -->
+                        <div class="col-md-12">
+                            <div class="procedure-item">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="sng_sny" name="sng_sny" value="SI">
+                                            <label class="form-check-label procedure-label" for="sng_sny">
+                                                SNG/SNY
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="offset-md-3 col-md-7">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text">Fecha Instalación:</span>
+                                            <input type="datetime-local" class="form-control" name="sng_sny_fecha" id="sng_sny_fecha">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CVC -->
+                        <div class="col-md-12">
+                            <div class="procedure-item">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="cvc" name="cvc" value="SI">
+                                            <label class="form-check-label procedure-label" for="cvc">
+                                                CVC
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="offset-md-3 col-md-7">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text">Fecha Instalación:</span>
+                                            <input type="datetime-local" class="form-control" name="cvc_fecha" id="cvc_fecha">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VVP -->
+                        <div class="col-md-12">
+                            <div class="procedure-item">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="vvp" name="vvp" value="SI">
+                                            <label class="form-check-label procedure-label" for="vvp">
+                                                VVP
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="offset-md-3 col-md-7">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text">Fecha Instalación:</span>
+                                            <input type="datetime-local" class="form-control" name="vvp_fecha" id="vvp_fecha">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+                            <div class="col-md-8">
+                                <label class="form-label">Soluciones Administradas</label>
+                                <textarea class="form-control" name="soluciones_administradas" id="soluciones_administradas"
+                                placeholder="Información relevante para la entrega de turno..." rows="2" ></textarea>
+                            </div>
+
+                        </div>
                     </div>
+
+                    <hr class="my-3 opacity-10" />
+                    <div>
+                        <h6 class="sub-section-title">Pertemencias</h6>
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label class="form-label"> </label>
+                                <textarea class="form-control" name="pertenencias" id="pertenencias"
+                                placeholder="Información relevante para la entrega de turno..." rows="2" ></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+                    <hr class="my-3 opacity-10" />
+                    <div>
+                        <h6 class="sub-section-title">Procedimientos al ingreso</h6>
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                              <table class="procedures-table">
+                                <tbody>
+                                    <!-- FILA 1 -->
+                                    <tr>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('monitor_cardiaco')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="monitor_cardiaco" name="monitor_cardiaco" value="1">
+                                                <label class="form-check-label" for="monitor_cardiaco">Monitor Cardíaco</label>
+                                            </div>
+                                        </td>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('smpt')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="smpt" name="smpt" value="1">
+                                                <label class="form-check-label" for="smpt">SMPT</label>
+                                            </div>
+                                        </td>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('hemograma')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="hemograma" name="hemograma" value="1">
+                                                <label class="form-check-label" for="hemograma">Hemograma</label>
+                                            </div>
+                                        </td>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('ecg')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="ecg" name="ecg" value="1">
+                                                <label class="form-check-label" for="ecg">ECG</label>
+                                            </div>
+                                        </td>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('tt')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="tt" name="tt" value="1">
+                                                <label class="form-check-label" for="tt">TT</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <!-- FILA 2 -->
+                                    <tr>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('csv')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="csv" name="csv" value="1">
+                                                <label class="form-check-label" for="csv">CSV</label>
+                                            </div>
+                                        </td>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('sonda_foley')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="sonda_foley" name="sonda_foley" value="1">
+                                                <label class="form-check-label" for="sonda_foley">Sonda Foley</label>
+                                            </div>
+                                        </td>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('pbq_ck')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="pbq_ck" name="pbq_ck" value="1">
+                                                <label class="form-check-label" for="pbq_ck">PBQ/CK</label>
+                                            </div>
+                                        </td>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('rx_torax')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="rx_torax" name="rx_torax" value="1">
+                                                <label class="form-check-label" for="rx_torax">Rx Tórax</label>
+                                            </div>
+                                        </td>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('mmv')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="mmv" name="mmv" value="1">
+                                                <label class="form-check-label" for="mmv">MMV</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <!-- FILA 3 -->
+                                    <tr>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('examen_fisico')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="examen_fisico" name="examen_fisico" value="1">
+                                                <label class="form-check-label" for="examen_fisico">Examen Físico</label>
+                                            </div>
+                                        </td>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('sng')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="sng" name="sng" value="1">
+                                                <label class="form-check-label" for="sng">SNG</label>
+                                            </div>
+                                        </td>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('ttpa')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="ttpa" name="ttpa" value="1">
+                                                <label class="form-check-label" for="ttpa">TTPA</label>
+                                            </div>
+                                        </td>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('linea_arterial')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="linea_arterial" name="linea_arterial" value="1">
+                                                <label class="form-check-label" for="linea_arterial">Línea Arterial</label>
+                                            </div>
+                                        </td>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('naricera')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="naricera" name="naricera" value="1">
+                                                <label class="form-check-label" for="naricera">Naricera</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <!-- FILA 4 -->
+                                    <tr>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('vvp')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="vvp" name="vvp" value="1">
+                                                <label class="form-check-label" for="vvp">VVP</label>
+                                            </div>
+                                        </td>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('intubacion')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="intubacion" name="intubacion" value="1">
+                                                <label class="form-check-label" for="intubacion">Intubación</label>
+                                            </div>
+                                        </td>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('gsa_gsv')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="gsa_gsv" name="gsa_gsv" value="1">
+                                                <label class="form-check-label" for="gsa_gsv">GSA/GSV</label>
+                                            </div>
+                                        </td>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('eco')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="eco" name="eco" value="1">
+                                                <label class="form-check-label" for="eco">ECO</label>
+                                            </div>
+                                        </td>Procedi
+                                        <td class="procedure-cell" onclick="toggleCheckbox('hgt')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="hgt" name="hgt" value="1">
+                                                <label class="form-check-label" for="hgt">HGT</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <!-- FILA 5 -->
+                                    <tr>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('vvc')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="vvc" name="vvc" value="1">
+                                                <label class="form-check-label" for="vvc">VVC</label>
+                                            </div>
+                                        </td>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('vmi_vmni')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="vmi_vmni" name="vmi_vmni" value="1">
+                                                <label class="form-check-label" for="vmi_vmni">VMI/VMNI</label>
+                                            </div>
+                                        </td>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('hemocultivo')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="hemocultivo" name="hemocultivo" value="1">
+                                                <label class="form-check-label" for="hemocultivo">Hemocultivo</label>
+                                            </div>
+                                        </td>
+                                        <td class="procedure-cell" onclick="toggleCheckbox('tac')">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="tac" name="tac" value="1">
+                                                <label class="form-check-label" for="tac">TAC</label>
+                                            </div>
+                                        </td>
+                                        <td class="procedure-cell">
+                                            <!-- Celda vacía -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                                
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div class="card shadow-sm border-primary">
@@ -536,21 +1477,7 @@ const abrirModalAgregarIngreso = async (id) => {
                     </div>
                 </div>
             </div>
-            <div class="sticky-bottom-bar">
-                <div class="container d-flex flex-column flex-sm-row justify-content-end gap-3 px-4">
-                    <button
-                        class="btn btn-outline-secondary px-4 d-flex align-items-center justify-content-center gap-2"
-                        type="button">
-                        <span class="material-symbols-outlined">cancel</span>
-                        Cancelar Ingreso
-                    </button>
-                    <button class="btn btn-success px-5 d-flex align-items-center justify-content-center gap-2 fw-bold"
-                        type="submit">
-                        <span class="material-symbols-outlined">save</span>
-                        Guardar y Finalizar Admisión
-                    </button>
-                </div>
-            </div>
+            
         </form>
     `;
 
@@ -560,6 +1487,184 @@ const abrirModalAgregarIngreso = async (id) => {
     // Mostrar el modal
     let modal = new bootstrap.Modal(document.getElementById('ingresoModal'));
     modal.show();
+
+    // Inicializar los checkboxes   
+    initializeProcedureAdminCheckboxes();
 }
 
-const verIngreso = abrirModalAgregarIngreso;
+const initializeProcedureAdminCheckboxes = () => {
+         // Auto-habilitar/deshabilitar campos de fecha según checkbox
+    const procedures = ['tet', 's_foley', 'sng_sny', 'cvc', 'vvp'];
+    
+    procedures.forEach(proc => {
+        const checkbox = document.getElementById(proc);
+        const dateInput = document.getElementById(proc + '_fecha');
+        
+        // Deshabilitar fecha inicialmente
+        dateInput.disabled = true;
+        
+        // Para TET, también manejar el campo de altura
+        if (proc === 'tet') {
+            const alturaInput = document.getElementById('tet_altura');
+            alturaInput.disabled = true;
+            
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    dateInput.disabled = false;
+                    alturaInput.disabled = false;
+                    // Establecer fecha/hora actual por defecto
+                    const now = new Date();
+                    const year = now.getFullYear();
+                    const month = String(now.getMonth() + 1).padStart(2, '0');
+                    const day = String(now.getDate()).padStart(2, '0');
+                    const hours = String(now.getHours()).padStart(2, '0');
+                    const minutes = String(now.getMinutes()).padStart(2, '0');
+                    dateInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+                } else {
+                    dateInput.disabled = true;
+                    alturaInput.disabled = true;
+                    dateInput.value = '';
+                    alturaInput.value = '';
+                }
+            });
+        } else {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    dateInput.disabled = false;
+                    // Establecer fecha/hora actual por defecto
+                    const now = new Date();
+                    const year = now.getFullYear();
+                    const month = String(now.getMonth() + 1).padStart(2, '0');
+                    const day = String(now.getDate()).padStart(2, '0');
+                    const hours = String(now.getHours()).padStart(2, '0');
+                    const minutes = String(now.getMinutes()).padStart(2, '0');
+                    dateInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+                } else {
+                    dateInput.disabled = true;
+                    dateInput.value = '';
+                }
+            });
+        }
+    });      
+
+};
+
+
+
+const guardarIngreso = () => {
+    // Aquí puedes agregar la lógica para guardar el ingreso
+    const idFormulario = document.querySelector('form');
+    const schema = formToSchema(idFormulario);
+
+    let response = tx.request({
+        url: '/ingresos',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: 'POST',
+        body: JSON.stringify(schema)
+    })
+
+    console.log(response);
+
+    
+
+    alert('Ingreso guardado exitosamente.');
+    // Cerrar el modal después de guardar
+    let modalElement = document.getElementById('ingresoModal');
+    let modal = bootstrap.Modal.getInstance(modalElement);
+    modal.hide();
+}
+
+
+
+const formToSchema = (form) => {
+  const schema = {};
+  const fields = form.querySelectorAll('[name]');
+
+  fields.forEach(field => {
+    const { name, type, value } = field;
+    const tag = field.tagName.toLowerCase();
+
+    // Inicialización del campo
+    if (!schema[name]) {
+      schema[name] = {
+        type,
+        value: null,
+        options: null,
+        multiple: false
+      };
+    }
+
+    const entry = schema[name];
+
+    // Detectar checkbox múltiples
+    if (type === 'checkbox') {
+      entry.multiple = form.querySelectorAll(`input[type="checkbox"][name="${name}"]`).length > 1;
+      entry.type = 'checkbox';
+      entry.options ??= [];
+      if (!entry.options.includes(value)) {
+        entry.options.push(value);
+      }
+
+      if (entry.multiple) {
+        entry.value ??= [];
+        if (field.checked) {
+          entry.value.push(value);
+        }
+      } else {
+        entry.value = field.checked;
+        entry.options = [true, false];
+      }
+
+      return;
+    }
+
+    // Radio
+    if (type === 'radio') {
+      entry.type = 'radio';
+      entry.options ??= [];
+      if (!entry.options.includes(value)) {
+        entry.options.push(value);
+      }
+      if (field.checked) {
+        entry.value = value;
+      }
+      return;
+    }
+
+    // Select
+    if (tag === 'select') {
+      entry.type = field.multiple ? 'select-multiple' : 'select';
+      entry.options = [...field.options].map(o => o.value);
+      entry.value = field.multiple
+        ? [...field.selectedOptions].map(o => o.value)
+        : field.value;
+      return;
+    }
+
+    // File
+    if (type === 'file') {
+      entry.type = 'file';
+      entry.value = field.files.length ? field.files : [];
+      return;
+    }
+
+    // Default (text, number, email, etc.)
+    entry.type = type;
+    entry.value = value;
+  });
+
+  // Normalización final
+  Object.values(schema).forEach(field => {
+    if (field.type === 'radio' && field.value === null) {
+      field.value = null;
+    }
+
+    if (field.type === 'checkbox' && field.multiple && field.value === null) {
+      field.value = [];
+    }
+  });
+
+  return schema;
+}

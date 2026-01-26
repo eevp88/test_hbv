@@ -54,6 +54,7 @@ CREATE TABLE signos_vitales (
     er INT, -- Escala de Riesgo
     pvc INT, -- Presión Venosa Central
     sato2 INT, -- Saturación de Oxígeno
+    gcs INT, -- Glasgow Coma Scale (Estado de Conciencia)
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
@@ -105,7 +106,7 @@ CREATE TABLE seguridad_paciente (
     alergias SET ('MEDICAMENTOS', 'ANESTESIA', 'ALIMENTOS', 'INSECTOS') DEFAULT '',
     estado_temperancia VARCHAR(20) NOT NULL,
     vacunas SET('ANTIRRABICA', 'TETANOS') DEFAULT '',
-    ant_morbidosos SET('HTA', 'DM', 'EPI', 'ERC','EPOC') DEFAULT '',    
+    ant_morbidos SET('HTA', 'DM', 'EPI', 'ERC','EPOC') DEFAULT '',    
     observaciones TEXT,
     FOREIGN KEY (id_ingreso) REFERENCES ingreso_enfermeria(id_ingreso) ON DELETE CASCADE,
     CONSTRAINT chk_estado_temperancia CHECK (estado_temperancia IN ('SOBRIO', 'ALIENTO ETILICO', 'EBRIO', 'COMA ETILICO'))
@@ -323,7 +324,7 @@ INSERT INTO higiene_paciente (id_ingreso, higiene, estado_piel, heridas, caracte
 (5, 'AYUDA PARCIAL', 'INTEGRA/HIDRATADA', '', '', 'SIN VENDAJE', 'Requiere ayuda para higiene corporal');
 
 -- 6. Insertar Seguridad
-INSERT INTO seguridad_paciente (id_ingreso, habitos, frecuencia_habitos, alergias, estado_temperancia, vacunas, ant_morbidosos, observaciones) VALUES
+INSERT INTO seguridad_paciente (id_ingreso, habitos, frecuencia_habitos, alergias, estado_temperancia, vacunas, ant_morbidos, observaciones) VALUES
 (1, 'TABACO', 'FRECUENTE', '', 'SOBRIO', 'TETANOS', 'HTA', 'Fumador de 20 cigarrillos/día por 15 años'),
 (2, '', '', 'MEDICAMENTOS', 'SOBRIO', '', 'DM,HTA', 'Alérgica a penicilina'),
 (3, 'ALCOHOL,TABACO', 'OCASIONAL', '', 'SOBRIO', 'TETANOS', 'HTA,DM', 'Consumo social de alcohol'),

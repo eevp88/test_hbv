@@ -31,8 +31,21 @@
                 <!-- Contenido dinámico -->
             </div>
              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                
+                <div class="container d-flex flex-column flex-sm-row justify-content-end gap-3 px-4">
+                    <button
+                        class="btn btn-outline-secondary px-4 d-flex align-items-center justify-content-center gap-2"
+                        type="button">
+                        <span class="material-symbols-outlined">cancel</span>
+                        Cancelar Ingreso
+                    </button>
+                    <button class="btn btn-success px-5 d-flex align-items-center justify-content-center gap-2 fw-bold"
+                        type="submit"
+                        onclick="guardarIngreso()">
+                        <span class="material-symbols-outlined">save</span>
+                        Guardar y Finalizar Admisión
+                    </button>
+                </div>
             </div>
         </div>
     </div>

@@ -156,3 +156,24 @@ body {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
 }
+
+.procedures-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+.procedures-table td {
+    padding: 12px;
+    border: 2px solid #dee2e6;
+    text-align: center;
+    vertical-align: middle;
+}
+.procedures-table td.procedure-cell {
+    background: white;
+    width: 20%;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.procedures-table td.procedure-cell:hover {
+    background-color: #f0f4ff;
+}
