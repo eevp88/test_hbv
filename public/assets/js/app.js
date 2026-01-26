@@ -192,7 +192,7 @@ const abrirModalAgregarIngreso = async (id) => {
                             <input class="form-control" type="number" name="edad" id="edad" />
                         </div>
                          <div class="col-md-2">
-                            <label class="form-label">Fecha Ingreso</label>
+                            <label class="form-label">Fecha Nacimiento</label>
                             <input class="form-control" type="date" name="fecha_nacimiento" id="fecha_nacimiento" />
                         </div>
                         <div class="col-md-2">
@@ -201,7 +201,7 @@ const abrirModalAgregarIngreso = async (id) => {
                         </div>
                         <div class="col-md-1">
                             <label class="form-label">Hora</label>
-                            <input class="form-control" type="time" name="hora_ingreso" id="hora_ingreso" />
+                            <input class="form-control" type="time" name="hora_ingreso" id="hora_ingreso" required/>
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">N° Ficha</label>
@@ -365,12 +365,36 @@ const abrirModalAgregarIngreso = async (id) => {
                         <h6 class="sub-section-title">Oxigenación</h6>
                         <div class="row g-3">
 
-                             <div class="col-md-3">
+                             
+
+
+                            <div class="col-md-3">
                                 <label class="form-label">Via. Aérea</label>
-                                <select class="form-select" name="via_aerea" id="via_aerea">
-                                   
-                                </select>
+                                <div class="d-flex gap-2">
+                                    <div class="form-check">
+                                        <input  type="checkbox" class="form-check-input" name="via_aeria" value="PERMEABLE">
+                                        <label class="form-check-label small">PERMEABLE</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input  type="checkbox" class="form-check-input" name="via_aeria" value="SECRECIONES">
+                                        <label class="form-check-label small">SECRECIONES</label>
+                                    </div>
+                                    <div class="form-check">                                        
+                                        <input  class="form-check-input" type="checkbox" name="via_aeria" value="CANULA MAYO">
+                                        <label class="form-check-label small">CANULA MAYO</label>
+                                    </div>
+
+                                    <div class="form-check">                                        
+                                        <input  class="form-check-input" type="checkbox" name="via_aeria" value="TOT">
+                                        <label class="form-check-label small">TOT</label>
+                                    </div>
+                                </div>
                             </div>
+
+
+                                
+                               
+                            
 
 
                              <div class="col-md-3">
@@ -554,7 +578,7 @@ const abrirModalAgregarIngreso = async (id) => {
                             </div>
 
                             <div class="col-md-3">
-                                <label class="form-label">Abdomen</label>
+                                <label class="form-label">Otras</label>
                                 <div class="d-flex flex-wrap gap-2">
                                     <div class="form-check form-check-inline">
                                         <input  type="checkbox" class="form-check-input" name="otra" value="SNG/SNY">
@@ -1650,7 +1674,12 @@ const formToJson = (form) => {
 };
 
 
-const schemaMap = {
+
+
+
+const normalizeIngresoPayload = (payload) => {
+
+   const schemaMap = {
   // INT
   int: [
     'fc','er','pvc','sato2','gcs','eva','fio2','hgt_sv','edad'
@@ -1679,10 +1708,7 @@ const schemaMap = {
     'pupilas','via_aerea','oxigenoterapia','color_piel',
     'secrecion','abdomen','otra','intestinal','urinaria'
   ]
-};
-
-
-function normalizeIngresoPayload(payload) {
+}; 
   const out = {};
 
   for (const [key, value] of Object.entries(payload)) {
@@ -1709,7 +1735,7 @@ function normalizeIngresoPayload(payload) {
 
     // BOOLEAN
     if (schemaMap.boolean.includes(key)) {
-      out[key] = value === true || value === 'true' || value === 1;
+      out[key] =  (value === true || value === 'true' || value === 1) ? 1 : 0;
       continue;
     }
 
@@ -1727,7 +1753,8 @@ function normalizeIngresoPayload(payload) {
 
     // Default: string / date / time
     out[key] = value;
-  }
+  } 
+   console.log(out)
 
   return out;
 }
