@@ -14,7 +14,8 @@ use PDO;
 class PacienteRepository
 {
     private PDO $db;
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = Database::connection();
     }
 
@@ -24,7 +25,6 @@ class PacienteRepository
             "SELECT * FROM pacientes WHERE RUN = :run"
         );
         $stmt->execute(['run' => $run]);
-
         $data = $stmt->fetch();
         return $data ? new Paciente($data) : null;
     }
@@ -42,23 +42,29 @@ class PacienteRepository
 
     public function create(Paciente $paciente): int
     {
+       
         $stmt = $this->db->prepare(
             "INSERT INTO pacientes
-             (nombre, run, edad, genero, telefono, email, ficha_clinica)
-             VALUES (:nombre, :run, :edad, :genero, :telefono, :email, :ficha)"
+             (nombre, run, edad, fecha_nacimiento, genero, direccion, telefono, email, ficha_clinica)
+             VALUES (:nombre, :run, :edad, :fecha_nacimiento, :genero, :direccion, :telefono, :email, :ficha_clinica)"
         );
 
-        $stmt->execute([
+        $bindVal = [
             'nombre' => $paciente->nombre,
             'run' => $paciente->run,
             'edad' => $paciente->edad,
+            'fecha_nacimiento' => $paciente->fecha_nacimiento ,
             'genero' => $paciente->genero,
+            'direccion' => $paciente->direccion,
             'telefono' => $paciente->telefono,
             'email' => $paciente->email,
-            'ficha' => $paciente->ficha_clinica
-        ]);
+            'ficha_clinica' => $paciente->ficha_clinica
+        ];
 
-        return (int) $this->db->lastInsertId();
+        $stmt->execute($bindVal);
+
+        $idPaciente = (int) $this->db->lastInsertId();
+        return $idPaciente;
     }
 
     public function update(Paciente $paciente): bool
@@ -67,19 +73,28 @@ class PacienteRepository
             "UPDATE pacientes SET
              nombre = :nombre,
              edad = :edad,
+             fecha_nacimiento = :fecha_nacimiento,
              genero = :genero,
+             direccion = :direccion,
              telefono = :telefono,
-             email = :email
+             email = :email,
+             ficha_clinica = :ficha_clinica
              WHERE id_paciente = :id"
         );
 
-        return $stmt->execute([
+          $bindVal = [
             'id' => $paciente->id_paciente,
             'nombre' => $paciente->nombre,
+            'run' => $paciente->run,
             'edad' => $paciente->edad,
+            'fecha_nacimiento' => $paciente->fecha_nacimiento ,
             'genero' => $paciente->genero,
+            'direccion' => $paciente->direccion,
             'telefono' => $paciente->telefono,
-            'email' => $paciente->email
-        ]);
+            'email' => $paciente->email,
+            'ficha_clinica' => $paciente->ficha_clinica
+        ];
+
+        return $stmt->execute($bindVal);
     }
 }

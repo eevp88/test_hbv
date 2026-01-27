@@ -57,6 +57,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        soloNumero();
        cargarIngresos();
     });
 </script>

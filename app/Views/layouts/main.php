@@ -10,6 +10,7 @@
     <link href="/assets/css/fonts/font_inter.css" rel="stylesheet" />
     <link href="/assets/css/fonts/font_material.css" rel="stylesheet" />
     <link href="/assets/css/plugins/dataTables.bootstrap5.min.css" rel="stylesheet">
+     <link href="/assets/css/plugins/sweetalert2.min.css" rel="stylesheet">
     <link href="/assets/css/app.css" rel="stylesheet">
 </head>
 
@@ -48,7 +49,7 @@
                             <li>
                                 <hr class="dropdown-divider" />
                             </li>
-                            <li><a class="dropdown-item" href="#">Sign out</a></li> 
+                            <li><a class="dropdown-item" href="#">SiDataTablesgn out</a></li> 
                         </ul> -->
                     </div>
                 </div>
@@ -88,6 +89,8 @@
     <!-- DataTables JS -->
     <script src="/assets/js/plugins/jquery.dataTables.min.js"></script>
     <script src="/assets/js/plugins/dataTables.bootstrap5.min.js"></script>
+    <!-- sweetalert2 JS -->
+    <script src="/assets/js/plugins/sweetalert2.all.min.js"></script>
 
 
 </body>

@@ -3,7 +3,7 @@ CREATE TABLE pacientes (
     id_paciente INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(255) NOT NULL,
     fecha_nacimiento DATE,
-    RUN VARCHAR(50) UNIQUE,
+    run VARCHAR(50) UNIQUE,
     edad INT,
     genero VARCHAR(50),
     direccion VARCHAR(255),

@@ -11,7 +11,7 @@ const cargarIngresos = async () => {
         });
 
         let columns = [
-            { title: "Accionres", data: null, render: function (data, type, row) {
+            { title: "Acciones", data: null, render: function (data, type, row) {
                 return `
                     <div class="btn-group btn-group-sm">
                         <button class="btn btn-outline-primary" onclick="abrirModalAgregarIngreso(${row.id_ingreso})" title="Edit">
@@ -124,6 +124,11 @@ const tx = {
             url = `${url}?${param}`;
         } else if (method == "POST") {
             config["body"] = JSON.stringify(body);
+        } else if (method == "PUT") {
+            config["body"] = JSON.stringify(body);
+        } else if (method == "DELETE"){
+            let param = tx.strQuery(params);
+            url = `${url}?${param}`;
         }
 
         let consulta = await fetch(url, config);
@@ -162,6 +167,52 @@ const toggleCheckbox = (checkboxId) => {
     checkbox.checked = !checkbox.checked;
 }
 
+const soloNumero =  () =>{
+    const modal = document.getElementById('ingresoModal');
+    modal.addEventListener('input', (event) => {
+        const input = event.target;
+        if (!input.classList.contains('solo-numero')) return;
+
+        let val = input.value.trim();
+
+        // 1️Normalizar separador decimal: ',' -> '.'
+        val = val.replace(',', '.');
+
+        // 2️Excepción "x/y" (presión arterial)
+        const regexFraccion = /^\d{1,3}\/\d{1,3}$/;
+        if (regexFraccion.test(val)) {
+            input.value = val;
+            return;
+        }
+
+        // 3️Leer límites configurables
+        let maxEnteros = parseInt(input.getAttribute('max-dig')) || 4; 
+        let maxDecimales = parseInt(input.getAttribute('dec-dig')) || 2; 
+
+        // 4️Eliminar caracteres inválidos
+        val = val.replace(/[^0-9.-]/g, '');
+
+        // 5 Mantener solo un signo negativo al inicio
+        val = val.replace(/(?!^)-/g, '');
+
+        // 6️ Separar parte entera y decimal
+        let [entera, decimal] = val.split('.');
+        if (!decimal) decimal = '';
+
+        // 7️ Limitar decimales
+        decimal = decimal.slice(0, maxDecimales);
+
+        // 8️ Limitar enteros
+        entera = entera.slice(0, maxEnteros);
+
+        // 9️ Reconstruir valor normalizado
+        val = decimal.length > 0 ? entera + '.' + decimal : entera;
+
+        input.value = val;
+    });
+}   
+   
+
 
 const abrirModalAgregarIngreso = async (id) => {
     // Cargar formulario vacío en el modal
@@ -179,39 +230,63 @@ const abrirModalAgregarIngreso = async (id) => {
                 </div>
                 <div class="card-body p-3">
                     <div class="row g-2 high-density-row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label class="form-label">Nombre Completo</label>
-                            <input class="form-control" placeholder="Nombres y Apellidos" type="text" name="nombre" id="nombre" />
+                            <input class="form-control" placeholder="Nombres y Apellidos" type="text" name="nombre" id="nombre" required />
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="form-label">RUT</label>
-                            <input class="form-control" placeholder="12.345.678-9" type="text" name="run"/>
+                            <input class="form-control" placeholder="12.345.678-9" type="text" name="run" required/>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-md-3">
                             <label class="form-label">Edad</label>
                             <input class="form-control" type="number" name="edad" id="edad" />
                         </div>
-                         <div class="col-md-2">
+                         <div class="col-md-3">
                             <label class="form-label">Fecha Nacimiento</label>
                             <input class="form-control" type="date" name="fecha_nacimiento" id="fecha_nacimiento" />
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">Fecha Ingreso</label>
-                            <input class="form-control" type="date" name="fecha_ingreso" id="fecha_ingreso" />
+                            <input class="form-control" type="date" name="fecha_ingreso" id="fecha_ingreso"  required/>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-md-2">
                             <label class="form-label">Hora</label>
                             <input class="form-control" type="time" name="hora_ingreso" id="hora_ingreso" required/>
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">N° Ficha</label>
-                            <input class="form-control" type="text" name="ficha" id="ficha" />
+                            <input class="form-control" type="text" name="ficha_clinica" id="ficha_clinica" />
                         </div>
+
+                         <div class="col-md-2">
+                            <label class="form-label">Genero</label>
+                            <select class="form-select" name="genero" id="genero" required>
+                                    <option value="">Seleccione...</option>
+                                    <option value="MASCULINO">MASCULINO</option>
+                                    <option value="FEMENINO">FEMENINO</option>
+                                    
+                                </select>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <label class="form-label">Telefono</label>
+                            <input class="form-control" type="text" name="telefono" id="telefono" />
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Correo Electronico</label>
+                            <input class="form-control" type="text" name="email" id="email" />
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Dirección</label>
+                            <input class="form-control" type="text" name="direccion" id="direccion" />
+                        </div>
+
                         <div class="col-md-2">
                             <label class="form-label">Procedencia</label>
                             <input class="form-control" type="text" name="procedencia" id="procedencia" />
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                             <label class="form-label">Diagnóstico Médico de Ingreso</label>
                             <input class="form-control" placeholder="Diagnóstico principal y secundarios" type="text" name="diagnostico" id="diagnostico" />
                         </div>
@@ -244,20 +319,20 @@ const abrirModalAgregarIngreso = async (id) => {
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" name="fc" id="fc" />
+                                    <td><input class="form-control form-control-sm border-0 text-center solo-numero" type="text" name="fc" id="fc" />
                                     </td>
-                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" name="fr" id="fr" />
+                                    <td><input class="form-control form-control-sm border-0 text-center solo-numero" type="text" name="fr" id="fr" />
                                     </td>
-                                    <td><input class="form-control form-control-sm border-0 text-center" placeholder="120/80" type="text" name="pa" id="pa" /></td>
+                                    <td><input class="form-control form-control-sm border-0 text-center solo-numero" placeholder="120/80" type="text" name="pa" id="pa" /></td>
 
-                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" name="tax" id="tax" />
+                                    <td><input class="form-control form-control-sm border-0 text-center solo-numero" type="text" name="tax" id="tax" />
                                     </td>
-                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" name="sato2" id="sato2" />
+                                    <td><input class="form-control form-control-sm border-0 text-center solo-numero" type="text" name="sato2" id="sato2" />
                                     </td>
-                                    <td><input class="form-control form-control-sm border-0 text-center" placeholder="21%" type="text" name="fio2" id="fio2" /></td>
-                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" name="hgt_sv" id="hgt_sv" />
+                                    <td><input class="form-control form-control-sm border-0 text-center solo-numero" placeholder="21%" type="text" name="fio2" id="fio2" /></td>
+                                    <td><input class="form-control form-control-sm border-0 text-center solo-numero" type="text" name="hgt_sv" id="hgt_sv" />
                                     </td>
-                                    <td><input class="form-control form-control-sm border-0 text-center" type="text" name="eva" id="eva" />
+                                    <td><input class="form-control form-control-sm border-0 text-center solo-numero" type="text" name="eva" id="eva" />
                                     </td>
                                 </tr>
                             </tbody>
@@ -296,7 +371,7 @@ const abrirModalAgregarIngreso = async (id) => {
                         <div class="row g-3">
                             <div class="col-md-3">
                                 <label class="form-label">Conciencia</label>
-                                <select class="form-select" name="conciencia" id="conciencia">
+                                <select class="form-select" name="conciencia" id="conciencia" required>
                                     <option value="">Seleccione...</option>
                                     <option value="CONCIENTE">CONCIENTE</option>
                                     <option value="DESORIENTADO">DESORIENTADO</option>
@@ -308,7 +383,7 @@ const abrirModalAgregarIngreso = async (id) => {
 
                             <div class="col-md-3">
                                 <label class="form-label">Com. Verbal</label>
-                                <select class="form-select" name="com_verbal" id="com_verbal">
+                                <select class="form-select" name="com_verbal" id="com_verbal" required>
                                     <option value="">Seleccione...</option>
                                     <option value="COMPLETA COHERENTE">COMPLETA COHERENTE</option>
                                     <option value="PARCIAL">PARCIAL</option>
@@ -331,7 +406,7 @@ const abrirModalAgregarIngreso = async (id) => {
 
                              <div class="col-md-3">
                                 <label class="form-label">Boca</label>
-                                <select class="form-select" name="boca" id="boca">
+                                <select class="form-select" name="boca" id="boca" required>
                                     <option value="">Seleccione...</option>
                                     <option value="SANA">SANA</option>
                                     <option value="CON LESIONES">CON LESIONES</option>
@@ -364,10 +439,6 @@ const abrirModalAgregarIngreso = async (id) => {
                     <div class="mb-4">
                         <h6 class="sub-section-title">Oxigenación</h6>
                         <div class="row g-3">
-
-                             
-
-
                             <div class="col-md-3">
                                 <label class="form-label">Via. Aérea</label>
                                 <div class="d-flex gap-2">
@@ -390,16 +461,9 @@ const abrirModalAgregarIngreso = async (id) => {
                                     </div>
                                 </div>
                             </div>
-
-
-                                
-                               
-                            
-
-
                              <div class="col-md-3">
                                 <label class="form-label">Respiracion</label>
-                                <select class="form-select" name="respiracion" id="respiracion">
+                                <select class="form-select" name="respiracion" id="respiracion" required >
                                      <option value="">Seleccione...</option>
                                     <option value="NORMAL">NORMAL</option>
                                     <option value="DISNEA">DISNEA</option>
@@ -424,7 +488,7 @@ const abrirModalAgregarIngreso = async (id) => {
 
                             <div class="col-md-3">
                                 <label class="form-label">Tos</label>
-                                <select class="form-select" name="tos" id="tos">
+                                <select class="form-select" name="tos" id="tos" required >
                                     <option value="">Seleccione...</option>
                                     <option value="AUSENTE">AUSENTE</option>
                                     <option value="SECA">SECA</option>
@@ -761,8 +825,6 @@ const abrirModalAgregarIngreso = async (id) => {
                                 </select>
                             </div> 
 
-
-
                             <div class="col-md-4">
                                 <label class="form-label">Inmovilización</label>
                                 <div class="d-flex flex-wrap gap-2">
@@ -1069,7 +1131,7 @@ const abrirModalAgregarIngreso = async (id) => {
                         <h6 class="sub-section-title">Termoregulación</h6>
                         <div class="row g-3">
                             <div class="col-md-4">
-                                <label class="form-label">Estado Temperancia</label>
+                                <label class="form-label">Temperatura</label>
                                 <select class="form-select mb-2" name="estado_termorregulacion" required> 
                                     <option value="">Seleccione...</option> 
                                     <option value="NORMAL">NORMAL</option> 
@@ -1259,7 +1321,7 @@ const abrirModalAgregarIngreso = async (id) => {
                                     <div class="offset-md-3 col-md-7">
                                         <div class="input-group input-group-sm">
                                             <span class="input-group-text">Fecha Instalación:</span>
-                                            <input type="datetime-local" class="form-control" name="vvp_fecha" id="vvp_fecha">
+                                            <input type="datetime-local" class="form-control" name="vvp_adm_fecha" id="vvp_adm_fecha">
                                         </div>
                                     </div>
                                 </div>
@@ -1523,7 +1585,7 @@ const abrirModalAgregarIngreso = async (id) => {
 
 const initializeProcedureAdminCheckboxes = () => {
          // Auto-habilitar/deshabilitar campos de fecha según checkbox
-    const procedures = ['tet', 's_foley', 'sng_sny', 'cvc', 'vvp'];
+    const procedures = ['tet', 's_foley', 'sng_sny', 'cvc', 'vvp_adm'];
     
     procedures.forEach(proc => {
         const checkbox = document.getElementById(proc);
@@ -1585,8 +1647,21 @@ const guardarIngreso = () => {
     const idFormulario = document.querySelector('form');
     const schema = formToJson(idFormulario);
     const payload = normalizeIngresoPayload(schema);
+
+    let  completado = validarRequired(idFormulario)
+
     console.log(schema)
     console.log('payload',payload)
+
+    if(!completado.estado){
+        let msgConfig = {
+            msg :'Debes completar los siguientes campos:<br>' + completado.faltantes.join('<br>'), 
+            clase: 'danger'
+        }
+        mostrarMensaje(msgConfig)
+        return
+    }
+
     let response = tx.request({
         url: '/ingresos',
         headers: {
@@ -1598,17 +1673,24 @@ const guardarIngreso = () => {
 
     console.log(response);
     if (response.success == false) {
-        alert(response.success);
+        let msgConfig = {
+            msg : `Problemas para crear el ingreso.`, 
+            clase: 'danger'
+        }
+        mostrarMensaje(msgConfig)
+        return
     }else{
         cargarIngresos()
-        alert('Ingreso guardado exitosamente.');
+        let msgConfig = {
+            msg : `Ingreso guardado exitosamente.`, 
+            clase: 'success'
+        }
+        mostrarMensaje(msgConfig)
         // Cerrar el modal después de guardar
         let modalElement = document.getElementById('ingresoModal');
         let modal = bootstrap.Modal.getInstance(modalElement);
         modal.hide();
-
     }
-
 }
 
 
@@ -1672,10 +1754,6 @@ const formToJson = (form) => {
 
   return data;
 };
-
-
-
-
 
 const normalizeIngresoPayload = (payload) => {
 
@@ -1759,3 +1837,65 @@ const normalizeIngresoPayload = (payload) => {
   return out;
 }
 
+
+const mostrarMensaje = (config) => {
+    let { msg, clase, noClose  } = config
+
+    if (typeof noClose === 'undefined'){
+        noClose = false
+    }
+    if (typeof clase === "undefined") {
+        clase = 'success';
+    }
+
+    if (clase == "success") {
+        var icono = "fa fa-check-square ";
+    } else {
+        var icono = "fa fa-exclamation-triangle ";
+    }
+
+    if (clase == 'success' || clase == 'warning') {
+        var timeout = 5000;
+    } else if (clase == 'danger') {
+        var timeout = 120000;
+    }
+
+    timeout = noClose ? null : timeout;
+    clase = clase == 'danger' ? 'error' : clase;
+
+    Swal.fire({
+        'html': msg,
+        'type': clase,
+        'timer': timeout,
+        'confirmButtonText': 'Ok'
+    });
+}
+
+
+const validarRequired = (form) => {
+    const requiredElements = form.querySelectorAll('[required]');
+    const faltantes = [];
+
+    requiredElements.forEach(el => {
+        // si el elemento no existe en el DOM
+        if (!document.body.contains(el)) {
+            faltantes.push(el.name || el.id || '(sin id ni name)');
+            return;
+        }
+
+        // si el elemento existe pero está vacío
+        if (el.type === 'checkbox' || el.type === 'radio') {
+            // para checkbox o radio, al menos uno debe estar marcado
+            const grupo = form.querySelectorAll(`[name="${el.name}"]`);
+            const algunoMarcado = Array.from(grupo).some(e => e.checked);
+            if (!algunoMarcado) faltantes.push(el.name || el.id);
+        } else if (!el.value || el.value.trim() === '') {
+            faltantes.push(el.name || el.id);
+        }
+    });
+
+    return {
+        estado: faltantes.length === 0,
+        faltantes
+    };
+}
