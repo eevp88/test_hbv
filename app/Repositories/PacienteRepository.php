@@ -3,9 +3,9 @@
 namespace App\Repositories;
 
 
-ini_set('display_errors', 1);
+/* ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+error_reporting(E_ALL); */
 
 use App\Entities\Paciente;
 use Core\Database;
@@ -22,9 +22,13 @@ class PacienteRepository
     public function findByRun(string $run): ?Paciente
     {
         $stmt = $this->db->prepare(
-            "SELECT * FROM pacientes WHERE RUN = :run"
+            "SELECT * FROM pacientes WHERE run = :run"
         );
-        $stmt->execute(['run' => $run]);
+       
+        $bind = array(
+            'run' => $run
+        );
+        $stmt->execute($bind);
         $data = $stmt->fetch();
         return $data ? new Paciente($data) : null;
     }
@@ -49,7 +53,7 @@ class PacienteRepository
              VALUES (:nombre, :run, :edad, :fecha_nacimiento, :genero, :direccion, :telefono, :email, :ficha_clinica)"
         );
 
-        $bindVal = [
+        $bindVal = array(
             'nombre' => $paciente->nombre,
             'run' => $paciente->run,
             'edad' => $paciente->edad,
@@ -59,7 +63,7 @@ class PacienteRepository
             'telefono' => $paciente->telefono,
             'email' => $paciente->email,
             'ficha_clinica' => $paciente->ficha_clinica
-        ];
+            );
 
         $stmt->execute($bindVal);
 
@@ -85,7 +89,6 @@ class PacienteRepository
           $bindVal = [
             'id' => $paciente->id_paciente,
             'nombre' => $paciente->nombre,
-            'run' => $paciente->run,
             'edad' => $paciente->edad,
             'fecha_nacimiento' => $paciente->fecha_nacimiento ,
             'genero' => $paciente->genero,

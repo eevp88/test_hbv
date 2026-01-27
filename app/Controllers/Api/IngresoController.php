@@ -2,10 +2,10 @@
 
 
 namespace App\Controllers\Api;
-
+/* 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+error_reporting(E_ALL); */
 
 use Core\Request;
 use Core\Response;
@@ -28,10 +28,8 @@ class IngresoController
     {
         $data = Request::json();  
         $resultado = $this->service->registrarIngresoCompleto($data);
-
-        header('Content-Type: application/json');
-        echo json_encode($resultado);
-
+        //header('Content-Type: application/json');
+        //echo json_encode($resultado);
         Response::json($resultado);
     }
 }

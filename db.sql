@@ -1,7 +1,7 @@
 --  Tabla principal: Pacientes
 CREATE TABLE pacientes (
     id_paciente INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(255) NOT NULL,
+    nombre VARCHAR(255) null,
     fecha_nacimiento DATE,
     run VARCHAR(50) UNIQUE,
     edad INT,
@@ -18,7 +18,7 @@ CREATE TABLE pacientes (
 --  Tabla:  Ingreso de Enfermería
 CREATE TABLE ingreso_enfermeria (
     id_ingreso INT PRIMARY KEY AUTO_INCREMENT,
-    id_paciente INT NOT NULL,
+    id_paciente INT null,
     
     
     hospital_nombre VARCHAR(255) DEFAULT 'HOSPITAL BASE VALDIVIA',
@@ -30,8 +30,8 @@ CREATE TABLE ingreso_enfermeria (
     
     
     diagnostico TEXT,
-    fecha_ingreso DATE NOT NULL,
-    hora_ingreso  TIME NOT NULL,
+    fecha_ingreso DATE null,
+    hora_ingreso  TIME null,
     anamnesis TEXT,
     nombre_enfermero VARCHAR(255),
     run_enfermero VARCHAR(50),
@@ -40,15 +40,15 @@ CREATE TABLE ingreso_enfermeria (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    fecha_termino DATE NOT NULL,
-    hora_termino TIME not NULL,
+    fecha_termino DATE null,
+    hora_termino TIME null,
 
     observaciones_finales TEXT,
 
     fc INT,
     pa VARCHAR(10), 
-    tax DECIMAL(4,2), 
-    ttr DECIMAL(4,2), 
+    tax DECIMAL(5,2), 
+    ttr DECIMAL(5,2), 
     er INT, 
     pvc INT,
     sato2 INT, 
@@ -59,40 +59,40 @@ CREATE TABLE ingreso_enfermeria (
 
     
 
-    actividad VARCHAR(20) NOT NULL, 
-    inmovilizacion SET('TABLA ESPINAL', 'COLLAR', 'FERULA', 'VALVA YESO') DEFAULT '',
-    fuerza_muscular varchar(20) not null,
-    sensibilidad varchar(20) not null,
+    actividad VARCHAR(20) null, 
+    inmovilizacion  varchar(50) NULL,
+    fuerza_muscular varchar(20) null,
+    sensibilidad varchar(20) null,
     observaciones_movilizacion TEXT,    
 
     
-    higiene VARCHAR(20) NOT NULL,
-    estado_piel VARCHAR(20) NOT NULL,
-    heridas SET('OPERATORIA', 'CORTANTE', 'PENETRANTE', 'ULCERA', 'QUEMADURA', 'CONTUSA') DEFAULT '',
-    caracteristicas_heridas SET('LIMPIA', 'SUCIA', 'CONTAMINADA', 'INFECTADA', 'ABRASIVA') DEFAULT '',
-    vendaje_heridas SET( 'LIMPIO', 'SUCIOS', 'FIJOS', 'SIN VENDAJE') DEFAULT '',
+    higiene VARCHAR(20) null,
+    estado_piel VARCHAR(20) null,
+    heridas varchar(80) NULL,
+    caracteristicas_heridas varchar(60) NULL,
+    vendaje_heridas varchar(60) NULL,
     observaciones_higiene TEXT,
   
 
 
-    habitos SET ('ALCOHOL', 'TABACO', 'DROGAS', 'VIF', 'MALTRATO') DEFAULT '',
-    frecuencia_habitos SET ('AISLADO', 'OCASIONAL', 'FRECUENTE') DEFAULT '',
-    alergias SET ('MEDICAMENTOS', 'ANESTESIA', 'ALIMENTOS', 'INSECTOS') DEFAULT '',
-    estado_temperancia VARCHAR(20) NOT NULL,
-    vacunas SET('ANTIRRABICA', 'TETANOS') DEFAULT '',
-    ant_morbidos SET('HTA', 'DM', 'EPI', 'ERC','EPOC') DEFAULT '',    
+    habitos varchar(60) NULL,
+    frecuencia_habitos varchar(60) NULL,
+    alergias varchar(60) NULL,
+    estado_temperancia VARCHAR(20) null,
+    vacunas varchar(60) NULL,
+    ant_morbidos varchar(60) NULL,    
     observaciones_seguridad TEXT,
 
 
 
-    estado_termorregulacion  VARCHAR(20) NOT NULL,   
+    estado_termorregulacion  VARCHAR(20) null,   
     observaciones_termorregulacion TEXT,
 
 
-    situacion_laboral VARCHAR(20) NOT NULL,
-    estado_animico VARCHAR(20) NOT NULL,
-    red_apoyo VARCHAR(20) NOT NULL,
-    acompanamiento VARCHAR(20) not null,
+    situacion_laboral VARCHAR(20) null,
+    estado_animico VARCHAR(20) null,
+    red_apoyo VARCHAR(20) null,
+    acompanamiento VARCHAR(20) null,
     observaciones_realizacion_personal TEXT,
 
 
@@ -103,7 +103,7 @@ CREATE TABLE ingreso_enfermeria (
   
 
     tet BOOLEAN DEFAULT FALSE,
-    tet_altura DECIMAL(4,2),
+    tet_altura DECIMAL(5,2),
     tet_fecha DATETIME,
 
     s_foley BOOLEAN DEFAULT FALSE,
@@ -147,38 +147,38 @@ CREATE TABLE ingreso_enfermeria (
     hgt BOOLEAN DEFAULT FALSE,
 
 
-    conciencia varchar(20) not null,
-    com_verbal varchar(20) not null,
-    alt_sensorial SET ('VISUAL', 'AUDITIVA', 'LENTES', 'AUDIFONOS') DEFAULT '' ,
-    boca VARCHAR(20) NOT NULL,
-    pupilas SET ('ISOCORIA', 'ANISOCORIA', 'MIOSIS', 'MIDRIASIS', 'RFM') DEFAULT '',
+    conciencia varchar(20) null,
+    com_verbal varchar(20) null,
+    alt_sensorial varchar(30) NULL ,
+    boca VARCHAR(20) null,
+    pupilas varchar(30) NULL,
     observaciones_comunicacion TEXT,
 
 
 
-    via_aerea SET('PERMEABLE', 'SECRECIONES', 'CANULA MAYO', 'TOT') DEFAULT '',
-    respiracion VARCHAR(20) NOT NULL, 
-    oxigenoterapia SET('BIGOTERA', 'MMV', 'MAF', 'TUBO T', 'AMBU') DEFAULT '',
-    tos varchar(20) not null,
-    color_piel SET('ROSADA', 'PALIDA', 'CINOTICA', 'LIVIDECES') DEFAULT '',
-    secrecion SET( 'MUCOSA', 'PURULENTA', 'HEMATICA', 'ABUNDANTE', 'REGULAR', 'ESCASA') DEFAULT '',
+    via_aerea varchar(50) NULL,
+    respiracion VARCHAR(20) null, 
+    oxigenoterapia varchar(50) NULL,
+    tos varchar(20) null,
+    color_piel varchar(50) NULL,
+    secrecion varchar(70) NULL,
     observaciones_oxigenacion TEXT,
 
 
 
-    estado_nutricional VARCHAR(20) NOT NULL,
-    alimentacion varchar(20) not null,
-    apetito VARCHAR(20) NOT NULL,
-    piel_mucosas VARCHAR(20) NOT NULL,
-    abdomen SET( 'BLANDO', 'DEPRESIBLE', 'DOLOROSO', 'DISTENDIDO', 'ASCITIS') DEFAULT '', 
-    otra SET('SNG/SNY', 'GASTRO', 'YEYUNO', 'ENTERAL', 'PARENTERAL') DEFAULT '',
+    estado_nutricional VARCHAR(20) null,
+    alimentacion varchar(20) null,
+    apetito VARCHAR(20) null,
+    piel_mucosas VARCHAR(20) null,
+    abdomen varchar(70) NULL, 
+    otra varchar(60) NULL,
     observaciones_nutricion TEXT,
 
-    intestinal SET('DIARREA', 'INCONTINENCIA', 'RECTORRAGIA', 'MELENA', 'ESTREÑIMIENTO', 'ACOLIA', 'PAÑALES',  'OSTOMIA') DEFAULT '',
-    urinaria SET('INCONTINENCIA', 'RETENCION', 'DISURIA', 'TENESMO', 'PAÑALES', 'SONDA FOLEY') DEFAULT '',
-    patron_sueno VARCHAR(20) NOT NULL, 
-    vestrise_desvestrise VARCHAR(20) NOT NULL,
-    aprendizaje varchar(20) not null,
+    intestinal varchar(110) NULL,
+    urinaria varchar(80),
+    patron_sueno VARCHAR(20) null, 
+    vestrise_desvestrise VARCHAR(20) null,
+    aprendizaje varchar(20) null,
     observaciones_eliminacion TEXT,
 
     solicita_servicios_religiosos BOOLEAN DEFAULT FALSE,

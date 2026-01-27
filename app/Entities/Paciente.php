@@ -2,9 +2,13 @@
 
 namespace App\Entities;
 
-ini_set('display_errors', 1);
+
+
+/* ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+error_reporting(E_ALL); */
+
+use InvalidArgumentException;
 
 /* 
     TODO
@@ -22,28 +26,32 @@ error_reporting(E_ALL);
 
 class Paciente
 {
-    public $id_paciente;
-    public $nombre;
-    public $fecha_nacimiento;
-    public $run;
-    public $edad;
-    public $genero;
-    public $direccion;
-    public $telefono;
-    public $email;
-    public $ficha_clinica;
+    public ?int $id_paciente = null;
+    public ?string $run = null;
+    public ?string $nombre = null;
+    public ?string $fecha_nacimiento = null;
+    public ?int $edad = null;
+    public ?string $genero = null;
+    public ?string $direccion = null;
+    public ?string $telefono = null;
+    public ?string $email = null;
+    public ?string $ficha_clinica = null;
 
     public function __construct(array $data = [])
     {
-        foreach ($data as $key => $value) {
-            if (property_exists($this, $key)) {
-                $this->$key = $value;
-            }
+        if (!isset($data['run']) || !is_string($data['run']) || $data['run'] === '') {
+            throw new InvalidArgumentException('RUN inválido o ausente');
         }
-    }
 
-    public function toArray(): array
-    {
-        return get_object_vars($this);
+        $this->run = $data['run'];
+
+        $this->nombre = $data['nombre'] ?? null;
+        $this->fecha_nacimiento = $data['fecha_nacimiento'] ?? null;
+        $this->edad = isset($data['edad']) ? (int)$data['edad'] : null;
+        $this->genero = $data['genero'] ?? null;
+        $this->direccion = $data['direccion'] ?? null;
+        $this->telefono = $data['telefono'] ?? null;
+        $this->email = $data['email'] ?? null;
+        $this->ficha_clinica = $data['ficha_clinica'] ?? null;
     }
 }

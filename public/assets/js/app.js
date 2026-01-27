@@ -2,17 +2,18 @@
 const cargarIngresos = async () => {
     try {
         let { response } = await tx.request({
-            method : "GET",
-            url    : "/ingresos",
+            method: "GET",
+            url: "/ingresos",
             headers: {
                 "Content-Type": "application/json"
             },
-            params : {}
+            params: {}
         });
 
         let columns = [
-            { title: "Acciones", data: null, render: function (data, type, row) {
-                return `
+            {
+                title: "Acciones", data: null, render: function (data, type, row) {
+                    return `
                     <div class="btn-group btn-group-sm">
                         <button class="btn btn-outline-primary" onclick="abrirModalAgregarIngreso(${row.id_ingreso})" title="Edit">
                         <span class="material-symbols-outlined" style="font-size: 16px;">edit</span>
@@ -26,32 +27,35 @@ const cargarIngresos = async () => {
                     </div>
                 
                 `;
-            }},
-             { title: "Paciente", data: null, render: function (data, type, row) {
-                return `<div class="d-flex align-items-center">
+                }
+            },
+            {
+                title: "Paciente", data: null, render: function (data, type, row) {
+                    return `<div class="d-flex align-items-center">
                             <div class="patient-avatar text-white me-3" style="background-color: ${generarColorAvatar(row.nombre)}">${obtenerIniciales(row.nombre)}</div>
                             <div>
                                 <div class="fw-semibold">${row.nombre}</div>
                                 <div class="text-muted small">${row.genero}, ${row.edad} </div>
                             </div>
                         </div>`
-                // return `${row.nombres} ${row.apellido_paterno} ${row.apellido_materno}`;
-            }},
-             
+                    // return `${row.nombres} ${row.apellido_paterno} ${row.apellido_materno}`;
+                }
+            },
+
             { title: "ID Ingreso", data: "id_ingreso" },
             { title: "Fecha de Ingreso", data: "fecha_ingreso" },
-            { title: "RUT Paciente", data: "RUN" },
-            { title : "Ficha Clinica", data: "ficha_clinica" },
-            { title : "Procedentablecia", data: "procedencia" },
+            { title: "RUT Paciente", data: "run" },
+            { title: "Ficha Clinica", data: "ficha_clinica" },
+            { title: "Procedentablecia", data: "procedencia" },
             { title: "Diagnóstico", data: "diagnostico" }
         ];
 
-        tablaInit({ columnas: columns, datos: response , idContenedor: "patientsTableDiv" });
+        tablaInit({ columnas: columns, datos: response, idContenedor: "patientsTableDiv" });
 
     } catch (error) {
         console.error("Error al cargar los ingresos:", error);
     }
-}   
+}
 
 
 const tablaInit = (data) => {
@@ -61,41 +65,41 @@ const tablaInit = (data) => {
         'dom': 'lBfrtip',
         'columns': columnas,
         'data': datos,
-        'language':{
-            "sProcessing":     "Procesando...",
-            "sLengthMenu":     "Mostrar _MENU_ registros",
-            "sZeroRecords":    "No se encontraron resultados",
-            "sEmptyTable":     "Ningún dato disponible en esta tabla",
-            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-            "sInfoPostFix":    "",
-            "sSearch":         "Buscar:",
-            "sUrl":            "",
-            "sInfoThousands":  ",",
+        'language': {
+            "sProcessing": "Procesando...",
+            "sLengthMenu": "Mostrar _MENU_ registros",
+            "sZeroRecords": "No se encontraron resultados",
+            "sEmptyTable": "Ningún dato disponible en esta tabla",
+            "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix": "",
+            "sSearch": "Buscar:",
+            "sUrl": "",
+            "sInfoThousands": ",",
             "sLoadingRecords": "Cargando...",
             "oPaginate": {
-            "sFirst":    "Primero",
-            "sLast":     "Último",
-            "sNext":     "Siguiente",
-            "sPrevious": "Anterior"
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"
             },
             "oAria": {
-            "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
             }
         }
-        
+
     }
 
 
     $(`#${idContenedor}`).html("");
-    var tabla = $('<table />', 
-            {'class':'table table-striped table-bordered table-hover nowrap'})
-        .appendTo( $(`#${idContenedor}`))
+    var tabla = $('<table />',
+        { 'class': 'table table-striped table-bordered table-hover nowrap' })
+        .appendTo($(`#${idContenedor}`))
         .DataTable(config);
-        $($(`#${idContenedor}`)).add('.dataTable').wrap('<div class="dataTables_scroll" />');
-        return tabla;
+    $($(`#${idContenedor}`)).add('.dataTable').wrap('<div class="dataTables_scroll" />');
+    return tabla;
 
 
 
@@ -108,15 +112,15 @@ const tx = {
             .map(k => esc(k) + '=' + esc(params[k]))
             .join('&');
         return query;
-    }, 
-    request : async (data) => {
+    },
+    request: async (data) => {
         let { method, headers, url, body, params } = data;
 
         let config = {
-            headers : headers,
-            mode  : 'cors',
-            cache : 'no-cache',
-            method  : data.method
+            headers: headers,
+            mode: 'cors',
+            cache: 'no-cache',
+            method: data.method
         }
 
         if (method == "GET") {
@@ -126,7 +130,7 @@ const tx = {
             config["body"] = JSON.stringify(body);
         } else if (method == "PUT") {
             config["body"] = JSON.stringify(body);
-        } else if (method == "DELETE"){
+        } else if (method == "DELETE") {
             let param = tx.strQuery(params);
             url = `${url}?${param}`;
         }
@@ -140,7 +144,7 @@ const tx = {
             throw new Error("Problemas de comunicación con el servidor");
         }
 
-        return {response, status};
+        return { response, status };
     }
 
 }
@@ -167,7 +171,7 @@ const toggleCheckbox = (checkboxId) => {
     checkbox.checked = !checkbox.checked;
 }
 
-const soloNumero =  () =>{
+const soloNumero = () => {
     const modal = document.getElementById('ingresoModal');
     modal.addEventListener('input', (event) => {
         const input = event.target;
@@ -186,8 +190,8 @@ const soloNumero =  () =>{
         }
 
         // 3️Leer límites configurables
-        let maxEnteros = parseInt(input.getAttribute('max-dig')) || 4; 
-        let maxDecimales = parseInt(input.getAttribute('dec-dig')) || 2; 
+        let maxEnteros = parseInt(input.getAttribute('max-dig')) || 4;
+        let maxDecimales = parseInt(input.getAttribute('dec-dig')) || 2;
 
         // 4️Eliminar caracteres inválidos
         val = val.replace(/[^0-9.-]/g, '');
@@ -210,8 +214,8 @@ const soloNumero =  () =>{
 
         input.value = val;
     });
-}   
-   
+}
+
 
 
 const abrirModalAgregarIngreso = async (id) => {
@@ -256,7 +260,7 @@ const abrirModalAgregarIngreso = async (id) => {
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">N° Ficha</label>
-                            <input class="form-control" type="text" name="ficha_clinica" id="ficha_clinica" />
+                            <input class="form-control solo-numero" type="text" max-dig="10" name="ficha_clinica" id="ficha_clinica" />
                         </div>
 
                          <div class="col-md-2">
@@ -443,20 +447,20 @@ const abrirModalAgregarIngreso = async (id) => {
                                 <label class="form-label">Via. Aérea</label>
                                 <div class="d-flex gap-2">
                                     <div class="form-check">
-                                        <input  type="checkbox" class="form-check-input" name="via_aeria" value="PERMEABLE">
+                                        <input  type="checkbox" class="form-check-input" name="via_aerea" value="PERMEABLE">
                                         <label class="form-check-label small">PERMEABLE</label>
                                     </div>
                                     <div class="form-check">
-                                        <input  type="checkbox" class="form-check-input" name="via_aeria" value="SECRECIONES">
+                                        <input  type="checkbox" class="form-check-input" name="via_aerea" value="SECRECIONES">
                                         <label class="form-check-label small">SECRECIONES</label>
                                     </div>
                                     <div class="form-check">                                        
-                                        <input  class="form-check-input" type="checkbox" name="via_aeria" value="CANULA MAYO">
+                                        <input  class="form-check-input" type="checkbox" name="via_aerea" value="CANULA MAYO">
                                         <label class="form-check-label small">CANULA MAYO</label>
                                     </div>
 
                                     <div class="form-check">                                        
-                                        <input  class="form-check-input" type="checkbox" name="via_aeria" value="TOT">
+                                        <input  class="form-check-input" type="checkbox" name="via_aerea" value="TOT">
                                         <label class="form-check-label small">TOT</label>
                                     </div>
                                 </div>
@@ -626,15 +630,15 @@ const abrirModalAgregarIngreso = async (id) => {
                                         <label class="form-check-label small">DEPRESIBLE</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="abdome" value="DOLOROSO">
+                                        <input  type="checkbox" class="form-check-input" name="abdomen" value="DOLOROSO">
                                         <label class="form-check-label small">DOLOROSO</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="abdome" value="DISTENDIDO">
+                                        <input  type="checkbox" class="form-check-input" name="abdomen" value="DISTENDIDO">
                                         <label class="form-check-label small">DISTENDIDO</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input  type="checkbox" class="form-check-input" name="abdome" value="ASCITIS">
+                                        <input  type="checkbox" class="form-check-input" name="abdomen" value="ASCITIS">
                                         <label class="form-check-label small">ASCITIS</label>
                                     </div>
                                    
@@ -1542,23 +1546,23 @@ const abrirModalAgregarIngreso = async (id) => {
                     <div class="row g-3">
                         <div class="col-md-4">
                             <label class="form-label">Nombre del Enfermero(a) que recibe</label>
-                            <input class="form-control" placeholder="Nombre completo" type="text" name="nombre_enfermero" />
+                            <input class="form-control" placeholder="Nombre completo" type="text" name="nombre_enfermero"  required />
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">RUT</label>
-                            <input class="form-control" type="text" mane="run_enfermero" />
+                            <input class="form-control" type="text" mane="run_enfermero"  required />
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Código</label>
-                            <input class="form-control" type="text"  name="codigo_enfermero" />
+                            <input class="form-control" type="text"  name="codigo_enfermero" required />
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">Fecha Término</label>
-                            <input class="form-control" type="date" name="fecha_termino"/>
+                            <input class="form-control" type="date" name="fecha_termino" required/>
                         </div>
                         <div class="col-md-2">
                             <label class="form-label">Hora Término</label>
-                            <input class="form-control" type="time" name="hora_termino"/>
+                            <input class="form-control" type="time" name="hora_termino" required />
                         </div>
                         <div class="col-12">
                             <label class="form-label">Observaciones Finales / Pendientes</label>
@@ -1584,22 +1588,22 @@ const abrirModalAgregarIngreso = async (id) => {
 }
 
 const initializeProcedureAdminCheckboxes = () => {
-         // Auto-habilitar/deshabilitar campos de fecha según checkbox
+    // Auto-habilitar/deshabilitar campos de fecha según checkbox
     const procedures = ['tet', 's_foley', 'sng_sny', 'cvc', 'vvp_adm'];
-    
+
     procedures.forEach(proc => {
         const checkbox = document.getElementById(proc);
         const dateInput = document.getElementById(proc + '_fecha');
-        
+
         // Deshabilitar fecha inicialmente
         dateInput.disabled = true;
-        
+
         // Para TET, también manejar el campo de altura
         if (proc === 'tet') {
             const alturaInput = document.getElementById('tet_altura');
             alturaInput.disabled = true;
-            
-            checkbox.addEventListener('change', function() {
+
+            checkbox.addEventListener('change', function () {
                 if (this.checked) {
                     dateInput.disabled = false;
                     alturaInput.disabled = false;
@@ -1619,7 +1623,7 @@ const initializeProcedureAdminCheckboxes = () => {
                 }
             });
         } else {
-            checkbox.addEventListener('change', function() {
+            checkbox.addEventListener('change', function () {
                 if (this.checked) {
                     dateInput.disabled = false;
                     // Establecer fecha/hora actual por defecto
@@ -1636,7 +1640,7 @@ const initializeProcedureAdminCheckboxes = () => {
                 }
             });
         }
-    });      
+    });
 
 };
 
@@ -1648,14 +1652,11 @@ const guardarIngreso = () => {
     const schema = formToJson(idFormulario);
     const payload = normalizeIngresoPayload(schema);
 
-    let  completado = validarRequired(idFormulario)
+    let completado = validarRequired(idFormulario)
 
-    console.log(schema)
-    console.log('payload',payload)
-
-    if(!completado.estado){
+    if (!completado.estado) {
         let msgConfig = {
-            msg :'Debes completar los siguientes campos:<br>' + completado.faltantes.join('<br>'), 
+            msg: 'Debes completar los siguientes campos:<br>' + completado.faltantes.join('<br>'),
             clase: 'danger'
         }
         mostrarMensaje(msgConfig)
@@ -1671,19 +1672,20 @@ const guardarIngreso = () => {
         body: JSON.stringify(payload)
     })
 
-    console.log(response);
+
     if (response.success == false) {
         let msgConfig = {
-            msg : `Problemas para crear el ingreso.`, 
+            msg: `Problemas para crear el ingreso.`,
             clase: 'danger'
         }
         mostrarMensaje(msgConfig)
         return
-    }else{
-        cargarIngresos()
+    } else {
+
         let msgConfig = {
-            msg : `Ingreso guardado exitosamente.`, 
-            clase: 'success'
+            msg: `Ingreso guardado exitosamente.`,
+            clase: 'success',
+            fn: 'cargarIngresos'
         }
         mostrarMensaje(msgConfig)
         // Cerrar el modal después de guardar
@@ -1695,153 +1697,153 @@ const guardarIngreso = () => {
 
 
 const formToJson = (form) => {
-  const data = {};
-  const fields = form.querySelectorAll('[name]');
+    const data = {};
+    const fields = form.querySelectorAll('[name]');
 
-  fields.forEach(field => {
-    let name = field.name;
-    const type = field.type;
-    const tag = field.tagName.toLowerCase();
+    fields.forEach(field => {
+        let name = field.name;
+        const type = field.type;
+        const tag = field.tagName.toLowerCase();
 
-    // Detectar arrays por convención name[]
-    const isArray = name.endsWith('[]');
-    if (isArray) {
-      name = name.slice(0, -2);
-      data[name] ??= [];
-    }
-
-    // CHECKBOX
-    if (type === 'checkbox') {
-      if (isArray) {
-        if (field.checked) {
-          data[name].push(field.value);
+        // Detectar arrays por convención name[]
+        const isArray = name.endsWith('[]');
+        if (isArray) {
+            name = name.slice(0, -2);
+            data[name] ??= [];
         }
-      } else {
-        data[name] = field.checked;
-      }
-      return;
-    }
 
-    // RADIO
-    if (type === 'radio') {
-      if (field.checked) {
-        data[name] = field.value;
-      } else if (!(name in data)) {
-        data[name] = null;
-      }
-      return;
-    }
+        // CHECKBOX
+        if (type === 'checkbox') {
+            if (isArray) {
+                if (field.checked) {
+                    data[name].push(field.value);
+                } ingresos
+            } else {
+                data[name] = field.checked;
+            }
+            return;
+        }
 
-    // SELECT
-    if (tag === 'select') {
-      if (field.multiple) {
-        data[name] = [...field.selectedOptions].map(o => o.value);
-      } else {
-        data[name] = field.value || null;
-      }
-      return;
-    }
+        // RADIO
+        if (type === 'radio') {
+            if (field.checked) {
+                data[name] = field.value;
+            } else if (!(name in data)) {
+                data[name] = null;
+            }
+            return;
+        }
 
-    // FILE
-    if (type === 'file') {
-      data[name] = field.files.length ? field.files : null;
-      return;
-    }
+        // SELECT
+        if (tag === 'select') {
+            if (field.multiple) {
+                data[name] = [...field.selectedOptions].map(o => o.value);
+            } else {
+                data[name] = field.value || null;
+            }
+            return;
+        }
 
-    // DEFAULT (text, number, date, etc.)
-    data[name] = field.value !== '' ? field.value : null;
-  });
+        // FILE
+        if (type === 'file') {
+            data[name] = field.files.length ? field.files : null;
+            return;
+        }
 
-  return data;
+        // DEFAULT (text, number, date, etc.)
+        data[name] = field.value !== '' ? field.value : null;
+    });
+
+    return data;
 };
 
 const normalizeIngresoPayload = (payload) => {
 
-   const schemaMap = {
-  // INT
-  int: [
-    'fc','er','pvc','sato2','gcs','eva','fio2','hgt_sv','edad'
-  ],
+    const schemaMap = {
+        // INT
+        int: [
+            'fc', 'er', 'pvc', 'sato2', 'gcs', 'eva', 'fio2', 'hgt_sv', 'edad'
+        ],
 
-  // DECIMAL
-  decimal: [
-    'peso','talla','tax','ttr','tet_altura'
-  ],
+        // DECIMAL
+        decimal: [
+            'peso', 'talla', 'tax', 'ttr', 'tet_altura'
+        ],
 
-  // BOOLEAN
-  boolean: [
-    'tet','s_foley','sng_sny','cvc','vvp_adm',
-    'monitor_cardiaco','csv','examen_fisico','vvp_ingreso',
-    'vvc','smpt','sonda_foley','sng','intubacion','vmi_vmni',
-    'hemograma','pbq_ck','gsa_gsv','hemocultivo','ecg',
-    'rx_torax','linea_arterial','eco','tac','tt','ttpa',
-    'naricera','mmv','hgt','solicita_servicios_religiosos'
-  ],
+        // BOOLEAN
+        boolean: [
+            'tet', 's_foley', 'sng_sny', 'cvc', 'vvp_adm',
+            'monitor_cardiaco', 'csv', 'examen_fisico', 'vvp_ingreso',
+            'vvc', 'smpt', 'sonda_foley', 'sng', 'intubacion', 'vmi_vmni',
+            'hemograma', 'pbq_ck', 'gsa_gsv', 'hemocultivo', 'ecg',
+            'rx_torax', 'linea_arterial', 'eco', 'tac', 'tt', 'ttpa',
+            'naricera', 'mmv', 'hgt', 'solicita_servicios_religiosos'
+        ],
 
-  // SET (array → CSV string)
-  set: [
-    'inmovilizacion','heridas','caracteristicas_heridas',
-    'vendaje_heridas','habitos','frecuencia_habitos',
-    'alergias','vacunas','ant_morbidos','alt_sensorial',
-    'pupilas','via_aerea','oxigenoterapia','color_piel',
-    'secrecion','abdomen','otra','intestinal','urinaria'
-  ]
-}; 
-  const out = {};
-
-  for (const [key, value] of Object.entries(payload)) {
-
-    // NULL explícito
-    if (value === '' || value === undefined) {
-      out[key] = null;
-      continue;
+        // SET (array → CSV string)
+        set: [
+            'inmovilizacion', 'heridas', 'caracteristicas_heridas',
+            'vendaje_heridas', 'habitos', 'frecuencia_habitos',
+            'alergias', 'vacunas', 'ant_morbidos', 'alt_sensorial',
+            'pupilas', 'via_aerea', 'oxigenoterapia', 'color_piel',
+            'secrecion', 'abdomen', 'otra', 'intestinal', 'urinaria'
+        ]
     }
+    const out = {}
 
-    // INT
-    if (schemaMap.int.includes(key)) {
-      out[key] = value === null ? null : parseInt(value, 10);
-      if (Number.isNaN(out[key])) out[key] = null;
-      continue;
-    }
+    for (const [key, value] of Object.entries(payload)) {
 
-    // DECIMAL
-    if (schemaMap.decimal.includes(key)) {
-      out[key] = value === null ? null : parseFloat(value);
-      if (Number.isNaN(out[key])) out[key] = null;
-      continue;
-    }
+        // NULL explícito
+        if (value === '' || value === undefined) {
+            out[key] = null;
+            continue;
+        }
 
-    // BOOLEAN
-    if (schemaMap.boolean.includes(key)) {
-      out[key] =  (value === true || value === 'true' || value === 1) ? 1 : 0;
-      continue;
-    }
+        // INT
+        if (schemaMap.int.includes(key)) {
+            out[key] = value === null ? null : parseInt(value, 10);
+            if (Number.isNaN(out[key])) out[key] = null;
+            continue;
+        }
 
-    // SET (array → string CSV)
-    if (schemaMap.set.includes(key)) {
-      if (Array.isArray(value)) {
-        out[key] = value.join(',');
-      } else if (value === false || value === null) {
-        out[key] = '';
-      } else {
+        // DECIMAL
+        if (schemaMap.decimal.includes(key)) {
+            out[key] = value === null ? null : parseFloat(value);
+            if (Number.isNaN(out[key])) out[key] = null;
+            continue;
+        }
+
+        // BOOLEAN
+        if (schemaMap.boolean.includes(key)) {
+            out[key] = (value === true || value === 'true' || value === 1) ? 1 : 0;
+            continue;
+        }
+
+        // SET (array → string CSV)
+        if (schemaMap.set.includes(key)) {
+            if (Array.isArray(value)) {
+                out[key] = value.join(',');
+            } else if (value === false || value === null) {
+                out[key] = '';
+            } else {
+                out[key] = value;
+            }
+            continue;
+        }
+
+        // Default: string / date / time
         out[key] = value;
-      }
-      continue;
     }
+    //console.log(out)
 
-    // Default: string / date / time
-    out[key] = value;
-  } 
-   console.log(out)
-
-  return out;
+    return out;
 }
 
 
 const mostrarMensaje = (config) => {
-    let { msg, clase, noClose  } = config
+    let { msg, clase, noClose, fn } = config
 
-    if (typeof noClose === 'undefined'){
+    if (typeof noClose === 'undefined') {
         noClose = false
     }
     if (typeof clase === "undefined") {
@@ -1863,12 +1865,33 @@ const mostrarMensaje = (config) => {
     timeout = noClose ? null : timeout;
     clase = clase == 'danger' ? 'error' : clase;
 
-    Swal.fire({
-        'html': msg,
-        'type': clase,
-        'timer': timeout,
-        'confirmButtonText': 'Ok'
-    });
+    if (fn === 'undefined') {
+        Swal.fire({
+            'html': msg,
+            'type': clase,
+            'timer': timeout,
+            'confirmButtonText': 'Ok'
+        });
+
+    } else {
+        Swal.fire({
+            html: msg,
+            type: clase,
+            timer: timeout,
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Ejecuta la función por nombre
+                if (typeof window[fn] === 'function') {
+                    window[fn]();
+                } else {
+                    console.error('La función no existe:', fn);
+                }
+            }
+        });
+
+    }
+
 }
 
 
