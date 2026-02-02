@@ -60,12 +60,7 @@ class IngresoEnfermeriaRepository
       
 
         $data = $ingreso->toArray();
-      /*     var_dump($data);
-        die; */
-
         unset($data['id_ingreso']);
-
-
         $cols = implode(',', array_keys($data));
         $vals = ':' . implode(',:', array_keys($data));
 
