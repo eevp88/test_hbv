@@ -167,6 +167,8 @@ class IngresoEnfermeria
 
     public $solicita_servicios_religiosos;
 
+    
+
     public function __construct(array $data = [])
     {
         foreach ($data as $key => $value) {
@@ -180,4 +182,6 @@ class IngresoEnfermeria
     {
         return array_filter(get_object_vars($this), fn($v) => $v !== null);
     }
+
+    public $paciente;
 }

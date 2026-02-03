@@ -15,5 +15,5 @@ $router->route('GET', '/', [HomeController::class, 'index']);
 $router->route('GET', '/ingresos',        [IngresoController::class, 'index']);
 $router->route('POST','/ingresos',       [IngresoController::class, 'store']);
 $router->route('GET', '/ingresos/{id}',   [IngresoController::class, 'show']);
-//$router->route('PUT' ,'/ingresos/{id}',   [IngresoController::class, 'update']);
-//$router->route('DELETE','/ingresos/{id}',[IngresoController::class, 'delete']);
+$router->route('PUT' ,'/ingresos/{id}',   [IngresoController::class, 'update']);
+$router->route('DELETE','/ingresos/{id}',[IngresoController::class, 'delete']);

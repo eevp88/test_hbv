@@ -30,4 +30,31 @@ class IngresoController
         $resultado = $this->service->registrarIngresoCompleto($data);
         Response::json($resultado);
     }
+
+    public function show(int $id)
+    {
+        $ingreso = $this->service->obtener($id);
+        if ($ingreso) {
+            return Response::json($ingreso);
+        } else {
+            Response::json(['message' => 'Ingreso no encontrado'], 404);
+        }
+    }
+
+    public function update(int $id): void
+    {
+        $data = Request::json();
+        $resultado = $this->service->actualizarIngreso($id, $data);
+        Response::json($resultado);
+    }
+
+    public function delete(int $id): void
+    {
+        $exito = $this->service->eliminar($id);
+        if ($exito) {
+            Response::json(['message' => 'Ingreso eliminado exitosamente']);
+        } else {
+            Response::json(['message' => 'Ingreso no encontrado'], 404);
+        }
+    }
 }

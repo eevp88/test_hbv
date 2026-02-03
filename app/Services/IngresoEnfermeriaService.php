@@ -76,6 +76,30 @@ class IngresoEnfermeriaService
         }
     }
 
+    public function actualizarIngreso(int $id, array $datos): array
+    {
+        try {
+            $ingresoExistente = $this->ingresoRepo->findById($id);
+
+            if (!$ingresoExistente) {
+                throw new DomainException('Ingreso no encontrado para actualizar');
+            }
+
+            $datos['id_ingreso'] = $id;
+            $ingresoActualizado = new IngresoEnfermeria($datos);
+
+            $this->ingresoRepo->update($ingresoActualizado);
+
+            return [
+                'success' => true,
+                'message' => 'Ingreso actualizado correctamente',
+                'ingreso_id' => $id
+            ];
+        } catch (Exception | InvalidArgumentException | DomainException $e) {
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
+
     public function listar(): array
     {
         return $this->ingresoRepo->findAll();
@@ -89,7 +113,32 @@ class IngresoEnfermeriaService
             throw new \DomainException('Ingreso no encontrado');
         }
 
+        //busco paciente asociado
+        $paciente = $this->pacienteRepo->findById($ingreso->id_paciente);
+        $ingreso->paciente = $paciente; 
+        
         return $ingreso;
+    }
+
+    public function eliminar(int $id): array
+    {
+        try {
+            $ingresoExistente = $this->ingresoRepo->findById($id);
+
+            if (!$ingresoExistente) {
+                throw new DomainException('Ingreso no encontrado para eliminar');
+            }
+
+            $this->ingresoRepo->delete($id);
+
+            return [
+                'success' => true,
+                'message' => 'Ingreso eliminado correctamente',
+                'ingreso_id' => $id
+            ];
+        } catch (Exception | DomainException $e) {
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
     }
 
     /**

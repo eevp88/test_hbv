@@ -47,7 +47,15 @@ class IngresoEnfermeriaRepository
     public function findById(int $id): ?IngresoEnfermeria
     {
         $stmt = $this->db->prepare(
-            "SELECT * FROM ingreso_enfermeria WHERE id_ingreso = :id"
+            "SELECT
+                i.*,
+                p.*
+            FROM
+                ingreso_enfermeria i,
+                pacientes p
+            WHERE
+            i.id_ingreso = :id
+            and i.id_paciente = p.id_paciente"
         );
         $stmt->execute(['id' => $id]);
 
@@ -86,6 +94,48 @@ class IngresoEnfermeriaRepository
         $lastId = (int) $this->db->lastInsertId();
         $this->writeLog("✅ Insert exitoso. ID: $lastId\n");
         return $lastId;
+    }
+
+    public function update(IngresoEnfermeria $ingreso): bool
+    {
+        $data = $ingreso->toArray();
+        $id = $data['id_ingreso'];
+        unset($data['id_ingreso']);
+
+        $setClause = implode(
+            ', ',
+            array_map(fn($col) => "$col = :$col", array_keys($data))
+        );
+
+        $sql = "UPDATE ingreso_enfermeria SET $setClause WHERE id_ingreso = :id_ingreso";
+        $data['id_ingreso'] = $id;
+
+        // 📝 LOGGING (solo si está habilitado)
+        $this->writeLog("=== INICIO DEBUG UPDATE===");
+        $this->writeLog("SQL: " . $sql);
+        $this->writeLog("Total campos: " . count($data));
+
+
+        // Log solo las primeras 10 keys para no saturar
+        $keysPreview = array_keys($data);
+        $this->writeLog("Primeros campos: " . implode(', ', $keysPreview) . "...");
+
+        $this->debugSQLParameters($sql, $data);
+        $this->writeLog("=== FIN DEBUG ===\n");
+
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($data);
+        $numRow = $stmt->rowCount();
+        $this->writeLog("✅ Update exitoso. Filas afectadas: $numRow\n");
+        return $numRow;
+    }
+
+    public function delete(int $id): bool
+    {
+        $stmt = $this->db->prepare("DELETE FROM ingreso_enfermeria WHERE id_ingreso = :id");
+        $stmt->execute(['id' => $id]);
+        return $stmt->rowCount() > 0;
     }
 
 

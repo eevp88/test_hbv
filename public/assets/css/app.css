@@ -177,3 +177,9 @@ body {
 .procedures-table td.procedure-cell:hover {
     background-color: #f0f4ff;
 }
+
+input[readonly] {
+  /* background-color: #f5f5f5; */  
+    background-color: #e9ecef !important;
+    cursor: not-allowed;
+}

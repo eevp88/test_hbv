@@ -74,19 +74,19 @@ class PacienteRepository
     public function update(Paciente $paciente): bool
     {
         $stmt = $this->db->prepare(
-            "UPDATE pacientes SET
-             nombre = :nombre,
-             edad = :edad,
-             fecha_nacimiento = :fecha_nacimiento,
-             genero = :genero,
-             direccion = :direccion,
-             telefono = :telefono,
-             email = :email,
-             ficha_clinica = :ficha_clinica
-             WHERE id_paciente = :id"
-        );
+            "UPDATE pacientes SET 
+                nombre = COALESCE(:nombre, nombre),
+                fecha_nacimiento = COALESCE(:fecha_nacimiento, fecha_nacimiento),
+                edad = COALESCE(:edad, edad),
+                genero = COALESCE(:genero, genero),
+                direccion = COALESCE(:direccion, direccion),
+                telefono = COALESCE(:telefono, telefono),
+                email = COALESCE(:email, email),
+                ficha_clinica = COALESCE(:ficha_clinica, ficha_clinica),
+                updated_at = CURRENT_TIMESTAMP
+            WHERE id_paciente = :id");
 
-          $bindVal = [
+        $bindVal = [
             'id' => $paciente->id_paciente,
             'nombre' => $paciente->nombre,
             'edad' => $paciente->edad,

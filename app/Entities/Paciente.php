@@ -42,7 +42,7 @@ class Paciente
         if (!isset($data['run']) || !is_string($data['run']) || $data['run'] === '') {
             throw new InvalidArgumentException('RUN inválido o ausente');
         }
-
+        $this->id_paciente = isset($data['id_paciente']) ? (int)$data['id_paciente'] : null;
         $this->run = $data['run'];
 
         $this->nombre = $data['nombre'] ?? null;
